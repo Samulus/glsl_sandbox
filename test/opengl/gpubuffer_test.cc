@@ -60,7 +60,7 @@ TEST_CASE("GPUBuffer", "[opengl]") {
          REQUIRE(interleaved[12] == 0);
          REQUIRE(interleaved[13] == normals[3]);
          REQUIRE(interleaved[14] == normals[4]);
-         REQUIRE(interleaved[15] == normals[4]);
+         REQUIRE(interleaved[15] == normals[5]);
       };
    };
 }
