@@ -1,0 +1,22 @@
+# ~/c++/glsl_sandbox/src/
+include_rules
+
+SRC_MAIN = \
+    main.cc
+
+SRC = \
+    filebrowser.cc \
+    event.cc \
+    ui.cc \
+    video.cc
+
+SRC_OPENGL = \
+    opengl/gpubuffer.cc
+
+SRC_IMGUI = \
+    lib/imgui/*.cpp \
+    lib/imgui/*.cc
+
+: foreach $(SRC) $(SRC_OPENGL) $(SRC_IMGUI) |> !cxx  |> $(OBJ_DIR)/%B.o $(OBJ_DIR)/<core> {objs}
+: $(SRC_MAIN) |> !cxx |> $(OBJ_DIR)/%B.o {objs}
+: {objs} |> !link |> $(BIN_DIR)/$(BIN_NAME)

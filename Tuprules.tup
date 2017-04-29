@@ -1,0 +1,14 @@
+CXX        = clang++
+CXXFLAGS   = --debug -std=c++1z -Wall -Wno-unused-function
+LDFLAGS    = -lSDL2 -lGLEW -lGL -lwren -llua
+INCLUDE    = -I$(TUP_CWD)/src/
+INCLUDE   += -I$(TUP_CWD)/src/opengl/
+INCLUDE   += -isystem $(TUP_CWD)/src/lib/
+INCLUDE   += -isystem $(TUP_CWD)/src/lib/imgui/
+BIN_DIR    = $(TUP_CWD)/build/bins
+OBJ_DIR    = $(TUP_CWD)/build/objs
+BIN_NAME   = glsl_sandbox
+
+
+!cxx   = |> $(CXX) $(INCLUDE) $(CXXFLAGS) -c %f -o %o |>
+!link  = |> $(CXX) $(LDFLAGS) %f -o %o |>

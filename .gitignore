@@ -1,0 +1,10 @@
+notes/
+.idea/
+.tup/
+.syntastic_cpp_config
+.ycm_extra_conf.py
+tags
+*.o
+build/
+.autotags.pid
+.tags

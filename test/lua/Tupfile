@@ -1,0 +1,9 @@
+# ~/c++/glsl_sandbox/test/opengl/
+include_rules
+
+BIN_NAME = lua_test
+
+!link = | $(OBJ_DIR)/<core> |> $(CXX) $(LDFLAGS) %f %<core> -o %o |>
+
+: foreach *.cc |> !cxx  |> $(OBJ_DIR)/%B.o {objs}
+: {objs} |> !link |> $(BIN_DIR)/$(BIN_NAME)
