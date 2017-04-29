@@ -46,7 +46,6 @@ TEST_CASE("Call method from C++", "[lua]") {
       double area   = lua["area"].get_or<double>(-1);
       REQUIRE(width  == 128);
       REQUIRE(height == 256);
-      REQUIRE(area != -1);
       REQUIRE(area == (128 * 256));
    }
 }
