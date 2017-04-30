@@ -4,16 +4,29 @@
  * Date: 04/17/2017
  */
 
+#include <cstdlib>
+#include <cstdio>
+
 #include <SDL2/SDL.h>
 #include <iostream>
 #include "video.h"
 #include "event.h"
 #include "ui.h"
 #include "error.h"
+#include "imgui_wrapper.h"
+#include "util.h"
+
+#include "sol.h"
 
 int main() {
    auto video = Video();
    auto event = Event();
+   auto imguiWrapper = ImGuiWrapper(video);
+
+   sol::state lua;
+   lua.open_libraries(sol::lib::base, sol::lib::package);
+   imguiWrapper.bind(lua);
+   lua.script_file("./scripts/main.lua");
 
    bool running = true;
    while (running) {
@@ -32,7 +45,9 @@ int main() {
       }
 
       video.clear(0.0,0.0,0.0);
+      lua["render"]();
       video.present();
+
    }
    return 0; 
 }
