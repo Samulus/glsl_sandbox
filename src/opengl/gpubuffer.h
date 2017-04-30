@@ -12,7 +12,7 @@
 #include <iostream>
 
 #include "gltype.h"
-#include "../util.h"
+#include "util.h"
 
 class GPUBuffer {
    private:
