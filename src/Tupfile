@@ -8,6 +8,7 @@ SRC = \
     filebrowser.cc \
     event.cc \
     ui.cc \
+    util.cc \
     video.cc
 
 SRC_OPENGL = \

@@ -5,9 +5,13 @@
  */
 
 #pragma once
+
 #include <iostream>
 #include <memory>
+#include <cassert>
+#include "whereami.h"
 
+// Dlang's format in C++
 template<typename ... Args>
 std::string strFormat(const std::string& format, Args ... args) {
    size_t size = snprintf( nullptr, 0, format.c_str(), args ... ) + 1; // Extra space for '\0'
@@ -15,3 +19,6 @@ std::string strFormat(const std::string& format, Args ... args) {
    std::snprintf( buf.get(), size, format.c_str(), args ... );
    return std::string( buf.get(), buf.get() + size - 1 ); // We don't want the '\0' inside
 }
+
+/// Return absolute path of binary
+std::string thisExePath();
