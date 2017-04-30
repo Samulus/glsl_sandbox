@@ -1,9 +1,10 @@
-# ~/c++/glsl_sandbox/src/
 include_rules
 
+# main module
 SRC_MAIN = \
     main.cc
 
+# core modules
 SRC = \
     filebrowser.cc \
     event.cc \
@@ -11,13 +12,22 @@ SRC = \
     util.cc \
     video.cc
 
-SRC_OPENGL = \
-    opengl/gpubuffer.cc
+# lua specific modules
+SRC_LUA = \
+    lua/*.cc
 
+# opengl specific modules
+SRC_OPENGL = \
+    opengl/*.cc
+
+# imgui specific modules
 SRC_IMGUI = \
     lib/imgui/*.cpp \
     lib/imgui/*.cc
 
-: foreach $(SRC) $(SRC_OPENGL) $(SRC_IMGUI) |> !cxx  |> $(OBJ_DIR)/%B.o $(OBJ_DIR)/<core> {objs}
+SRC_WHEREAMI = \
+   lib/whereami.c
+
+: foreach $(SRC) $(SRC_OPENGL) $(SRC_LUA) $(SRC_IMGUI) $(SRC_WHEREAMI) |> !cxx  |> $(OBJ_DIR)/%B.o $(OBJ_DIR)/<core> {objs}
 : $(SRC_MAIN) |> !cxx |> $(OBJ_DIR)/%B.o {objs}
 : {objs} |> !link |> $(BIN_DIR)/$(BIN_NAME)
