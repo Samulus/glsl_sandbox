@@ -15,5 +15,4 @@ class FileBrowser {
    public:
       FileBrowser(const std::string& path);
       std::vector<std::string> ls() const;
-//std::vector<std::string> ls(const std::string& path) const;
 };
