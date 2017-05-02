@@ -25,9 +25,6 @@ SRC_IMGUI = \
     lib/imgui/*.cpp \
     lib/imgui/*.cc
 
-SRC_WHEREAMI = \
-   lib/whereami.c
-
-: foreach $(SRC) $(SRC_OPENGL) $(SRC_LUA) $(SRC_IMGUI) $(SRC_WHEREAMI) |> !cxx  |> $(OBJ_DIR)/%B.o $(OBJ_DIR)/<core> {objs}
+: foreach $(SRC) $(SRC_OPENGL) $(SRC_UI) $(SRC_IMGUI) |> !cxx  |> $(OBJ_DIR)/%B.o $(OBJ_DIR)/<core> {objs}
 : $(SRC_MAIN) |> !cxx |> $(OBJ_DIR)/%B.o {objs}
 : {objs} |> !link |> $(BIN_DIR)/$(BIN_NAME)

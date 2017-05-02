@@ -9,7 +9,6 @@
 #include <iostream>
 #include <memory>
 #include <cassert>
-#include "whereami.h"
 
 // Dlang's format in C++
 template<typename ... Args>
