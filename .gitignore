@@ -5,6 +5,8 @@ notes/
 .ycm_extra_conf.py
 tags
 *.o
-build/
+*.ini
+build/bins/*_test
+build/bins/glsl_sandbox
 .autotags.pid
 .tags
