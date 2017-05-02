@@ -31,7 +31,8 @@ int main() {
    bool running = true;
    while (running) {
       while (event.hasEvent()) {
-         auto sdlEvent = event.getEvent();
+         SDL_Event sdlEvent = event.getEvent();
+         ImGui_ImplSdlGL3_ProcessEvent(&sdlEvent);
          switch (sdlEvent.type) {
             case SDL_QUIT:
                running = false;
