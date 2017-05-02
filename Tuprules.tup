@@ -5,7 +5,7 @@ LDFLAGS    = -lSDL2 -lGLEW -lGL -lwren -llua -ldl
 # internal code to include
 INCLUDE    = -I$(TUP_CWD)/src/
 INCLUDE   += -I$(TUP_CWD)/src/opengl/
-INCLUDE   += -I$(TUP_CWD)/src/lua/
+INCLUDE   += -I$(TUP_CWD)/src/ui/
 
 # libraries to include
 INCLUDE   += -isystem $(TUP_CWD)/src/lib/

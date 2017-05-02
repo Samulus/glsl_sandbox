@@ -8,13 +8,12 @@ SRC_MAIN = \
 SRC = \
     filebrowser.cc \
     event.cc \
-    ui.cc \
     util.cc \
     video.cc
 
-# lua specific modules
-SRC_LUA = \
-    lua/*.cc
+# ui specific modules
+SRC_UI = \
+    ui/*.cc
 
 # opengl specific modules
 SRC_OPENGL = \
