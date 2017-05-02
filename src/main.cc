@@ -13,7 +13,8 @@
 #include "event.h"
 #include "ui.h"
 #include "error.h"
-#include "imgui_wrapper.h"
+#include "imgui_lua.h"
+#include "imgui_impl_sdl_gl3.h"
 #include "util.h"
 
 #include "sol.h"
@@ -21,12 +22,22 @@
 int main() {
    auto video = Video();
    auto event = Event();
-   auto imguiWrapper = ImGuiWrapper(video);
 
    sol::state lua;
    lua.open_libraries(sol::lib::base, sol::lib::package);
-   imguiWrapper.bind(lua);
-   lua.script_file("./scripts/main.lua");
+   ImGuiWrapper::bind(lua, video);
+
+   std::string main_path = thisExePath() + "scripts/main.lua";
+
+   try {
+      lua.script_file(main_path);
+   } catch (const std::exception& e) {
+      SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,
+            "Missing scripts/main.lua",
+            ("Please create the file :" + main_path).c_str(),
+            video.getWindowPtr());
+      return -1;
+   }
 
    bool running = true;
    while (running) {
@@ -45,6 +56,7 @@ int main() {
          }
       }
 
+      video.setViewport();
       video.clear(0.0,0.0,0.0);
       lua["render"]();
       video.present();
