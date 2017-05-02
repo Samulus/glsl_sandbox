@@ -5,8 +5,12 @@
  */
 
 #include "util.h"
+#include <SDL2/SDL.h>
 
 /// Return absolute path of binary
 std::string thisExePath() {
+   char* p = SDL_GetBasePath();
+   std::string output = std::string(p);
+   free(p);
    return output;
 }
