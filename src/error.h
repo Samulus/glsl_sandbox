@@ -2,6 +2,9 @@
  * error.h
  * Author: Samuel Vargas
  * Date: 04/17/2017
+ *
+ * General exceptions / error handling for application-wide 
+ * runtime problems
  */
 
 #pragma once

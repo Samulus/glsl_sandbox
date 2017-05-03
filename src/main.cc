@@ -23,6 +23,9 @@ int main() {
    auto video = Video();
    auto event = Event();
 
+   /* 
+    * Register Standard IO
+    */
    sol::state lua;
    lua.open_libraries(sol::lib::base, sol::lib::package);
    ImGuiWrapper::bind(lua, video);

@@ -2,21 +2,23 @@
 CXX        = g++
 CXXFLAGS   = -g -std=c++1z -Wall -Wno-unused-function
 LDFLAGS    = -lSDL2 -lGLEW -lGL -lwren -llua -ldl
+
 # internal code to include
 INCLUDE    = -I$(TUP_CWD)/src/
-INCLUDE   += -I$(TUP_CWD)/src/opengl/
-INCLUDE   += -I$(TUP_CWD)/src/ui/
 
 # libraries to include
 INCLUDE   += -isystem $(TUP_CWD)/src/lib/
 INCLUDE   += -isystem $(TUP_CWD)/src/lib/imgui/
 
+# external paths
+INCLUDE   += -isystem /usr/include/GL/
+
 # output directories
 BIN_DIR    = $(TUP_CWD)/build/bins
 OBJ_DIR    = $(TUP_CWD)/build/objs
+
 # resulting binary name
 BIN_NAME   = glsl_sandbox
 
 !cxx   = |> $(CXX) $(INCLUDE) $(CXXFLAGS) -c %f -o %o |>
 !link  = |> $(CXX) $(LDFLAGS) -g %f -o %o |>
-

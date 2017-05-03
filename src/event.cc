@@ -1,3 +1,11 @@
+/*
+ * event.cc
+ * Author: Samuel Vargas
+ * 05/03/2017
+ *
+ * Event detection / retrevial for application
+ */
+
 #include <SDL2/SDL.h>
 #include "event.h"
 #include "error.h"

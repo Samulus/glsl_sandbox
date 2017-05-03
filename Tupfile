@@ -1,0 +1,24 @@
+include_rules
+
+# main module
+SRC_MAIN = \
+    src/main.cc
+
+# core modules
+SRC = \
+   src/event.cc \
+   src/filebrowser.cc \
+   src/gpubuffer.cc \
+   src/imgui_lua.cc \
+   src/objwavefront.cc \
+   src/util.cc \
+   src/video.cc \
+
+# imgui ui library
+SRC_IMGUI = \
+    src/lib/imgui/*.cpp \
+    src/lib/imgui/*.cc
+
+: foreach $(SRC) $(SRC_IMGUI) |> !cxx  |> $(OBJ_DIR)/%B.o $(OBJ_DIR)/<core> {objs}
+: $(SRC_MAIN) |> !cxx |> $(OBJ_DIR)/%B.o {objs}
+: {objs} |> !link |> $(BIN_DIR)/$(BIN_NAME)
