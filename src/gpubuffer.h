@@ -2,6 +2,10 @@
  * gpubuffer.h
  * Author: Samuel Vargas
  * Date: 04/17/2017
+ *
+ * A wrapper around interleaving vectors of
+ * vertex / normal / color / texture data into
+ * single GLfloat[] for uploading to GPU.
  */
 
 #pragma once
