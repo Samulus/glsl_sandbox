@@ -14,8 +14,6 @@ class Script {
       sol::state lua;
    public:
       Script(const std::string&, const Video&);
-      sol::global_table operator[](std::string key) const;
-
       template <typename... T>
       std::tuple<T...> fn(std::string key) {
          return this->lua[key]();
