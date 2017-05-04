@@ -8,11 +8,12 @@ SRC_MAIN = \
 SRC = \
    src/event.cc \
    src/filebrowser.cc \
-   src/imgui_lua.cc \
    src/script.cc \
    src/util.cc \
    src/video.cc \
 
+SRC_LUA = \
+   src/lua/*.cc
 
 SRC_OPENGL = \
    src/opengl/*.cc
