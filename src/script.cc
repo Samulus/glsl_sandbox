@@ -6,9 +6,17 @@
 
 #include "script.h"
 #include "imgui_lua.h"
+#include "opengl_lua.h"
 
 Script::Script(const std::string& path, const Video& video) {
-   this->lua.script_file(path);
-   this->lua.open_libraries(sol::lib::base, sol::lib::package);
+   this->lua.open_libraries(
+         sol::lib::base,
+         sol::lib::package,
+         sol::lib::string,
+         sol::lib::math,
+         sol::lib::table
+   );
    ImGuiWrapper::bind(this->lua, video);
+   OpenGL_Lua::bind(this->lua);
+   this->lua.script_file(path);
 }
