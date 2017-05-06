@@ -10,11 +10,12 @@
 
 class Video {
    private:
-      SDL_Window* window = nullptr;
-      SDL_GLContext glContext = nullptr;
-   public:
+      SDL_Window* window;
+      SDL_GLContext glContext;
+      static Video* instance;
       Video();
-      void init(bool& hasError);
+   public:
+      static Video& getInstance();
       void clear(float r, float g, float b);
       void setViewport();
       void present();
