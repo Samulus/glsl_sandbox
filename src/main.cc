@@ -21,7 +21,7 @@
 #include "sol.h"
 
 int main() {
-   auto video  = Video();
+   auto video  = Video::getInstance();
    auto event  = Event();
    auto script = Script(
          thisExePath() + "scripts/main.lua", video
@@ -50,5 +50,5 @@ int main() {
       video.present();
 
    }
-   return 0; 
+   return 0;
 }
