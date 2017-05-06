@@ -830,6 +830,7 @@ namespace sol {
 #else
 #define SOL_LUA_VERSION 502
 #endif // Lua Version 502, 501 || luajit, 500 
+#define SOL_CHECK_ARGUMENTS
 
 #ifdef _MSC_VER
 #ifdef _DEBUG
