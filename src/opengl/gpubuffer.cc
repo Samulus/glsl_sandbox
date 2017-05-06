@@ -14,6 +14,7 @@
 #include "gpubuffer.h"
 #include "gltype.h"
 #include "../error.h"
+#include "util_lua.h"
 
 GPUBuffer::GPUBuffer(size_t numPoints, std::vector<GLVectorLen> vectorLen) {
    this->numPoints = numPoints;
@@ -46,18 +47,19 @@ void GPUBuffer::unbind() {
    glBindVertexArray(0);
 }
 
+
 void GPUBuffer::insert(unsigned char position, std::vector<GLfloat> newVertexData) {
    // can't insert data into a non-existent position in the interleaved buffer
    if (position < 0 || position >= this->vectorLen.size()) {
       throw OpenGL::InvalidAttributePosition(position, newVertexData);
    }
 
-   // not enough vertices passed into function 
+   // not enough vertices passed into function
    // e.g they're trying to insert data for position=1 which is a vector3
    // but their data is missing an element or is formatted as a vector 2
    if (newVertexData.size() != numPoints * (int)this->vectorLen[position]) {
       throw OpenGL::MismatchVertexCount(position, vectorLen, numPoints, newVertexData);
-   } 
+   }
 
    size_t start = 0;
    for (size_t i=0; i < position; ++i) {
@@ -82,7 +84,23 @@ void GPUBuffer::insert(unsigned char position, std::vector<GLfloat> newVertexDat
       b += newVectorSize;
    }
 }
+void GPUBuffer::setEBO(std::vector<GLuint> indices) {
+   this->indices = indices;
+}
 
 const GLfloat* GPUBuffer::getInterleavedBuffer() const {
    return this->buffer;
+}
+
+/// sol2 / lua
+GPUBuffer::GPUBuffer(size_t numPoints, sol::table vectorLen) :
+   GPUBuffer::GPUBuffer(numPoints, tableToVector<GLVectorLen>(vectorLen)) {
+}
+
+void GPUBuffer::insert(unsigned char position, sol::table newVertexData) {
+     this->insert(position, tableToVector<GLfloat>(newVertexData));
+}
+
+void GPUBuffer::setEBO(sol::table indices) {
+   this->setEBO(tableToVector<GLuint>(indices));
 }

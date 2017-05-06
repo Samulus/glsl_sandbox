@@ -15,6 +15,7 @@
 #include <vector>
 #include <iostream>
 
+#include "sol.h"
 #include "gltype.h"
 #include "util.h"
 
@@ -32,10 +33,14 @@ class GPUBuffer {
       void unbind();
       void insert(unsigned char position, std::vector<GLfloat> data);
       void setEBO(std::vector<GLuint> indices);
+      const GLfloat* getInterleavedBuffer() const;
       void renderTri();
       void renderEBO();
       void renderLines();
-      const GLfloat* getInterleavedBuffer() const;
+   public: // sol2 / lua
+      GPUBuffer(size_t numPoints, sol::table vectorLen);
+      void insert(unsigned char, sol::table);
+      void setEBO(sol::table);
 };
 
 namespace OpenGL {
