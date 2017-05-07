@@ -11,7 +11,6 @@
 #include <iostream>
 #include "video.h"
 #include "event.h"
-#include "ui.h"
 #include "error.h"
 #include "script.h"
 #include "imgui_lua.h"
