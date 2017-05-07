@@ -9,14 +9,15 @@
  */
 
 #pragma once
-#include "tiny_obj_loader.h"
-#include "objwavefront.h"
 #include <iostream>
+#include <vector>
+#include <GL/glew.h>
 
-#pragma once
 class GLModel {
    private:
-      std::string name;
+      std::vector<GLuint> indices;
+      std::vector<GLuint> vertices;
+      GLModel();
    public:
-      GLModel(std::string);
+      static GLModel GLModelFromWavefront(std::string, std::string);
 };

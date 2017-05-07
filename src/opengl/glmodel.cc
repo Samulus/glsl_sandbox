@@ -10,6 +10,27 @@
 
 #include "glmodel.h"
 
-GLModel::GLModel(std::string name) {
-   this->name = name;
+#define TINYOBJLOADER_IMPLEMENTATION
+#include "tiny_obj_loader.h"
+
+
+GLModel::GLModel() {}
+
+GLModel GLModel::GLModelFromWavefront(std::string obj_path, std::string folder) {
+
+   std::vector<tinyobj::shape_t> shapes;
+   std::vector<tinyobj::material_t> mtls;
+   tinyobj::attrib_t attribs;
+   std::string error;
+   bool ok = tinyobj::LoadObj(
+         &attribs, &shapes, &mtls, &error,
+         (folder + "/" + obj_path).c_str(),
+         (folder + "/").c_str()
+   );
+
+   if (!ok || !error.empty()) {
+      throw std::runtime_error(error);
+   }
+
+   return GLModel();
 }
