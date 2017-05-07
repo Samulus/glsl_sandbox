@@ -10,6 +10,7 @@
 
 Script::Script(const std::string& path, const Video& video) {
    this->lua.open_libraries(
+         sol::lib::io,
          sol::lib::base,
          sol::lib::package,
          sol::lib::string,
