@@ -1,5 +1,5 @@
 /*
- * gpubuffer_test.cc
+ * opengl_test.cc
  * Author: Samuel Vargas
  * Date: 04/18/2017
  */
@@ -12,7 +12,13 @@
 #include "gpubuffer.h"
 #include <vector>
 
-TEST_CASE("GPUBuffer", "[opengl]") {
+TEST_CASE("::Framebuffer", "[opengl]"){
+
+   GIVEN("Framebuffer with three textures is created") {
+   }
+}
+
+TEST_CASE("::GPUBuffer", "[opengl]") {
 
    GIVEN ("GPUBuffer is simple quad") {
       size_t numPoints = 4;
