@@ -26,3 +26,14 @@ sol::table arrayToTable(const T* array, size_t n) {
    }
    return output;
 }
+
+namespace Lua {
+   template <typename T>
+   void throwIfMissingArgument(const sol::table& table, std::string arg) {
+      sol::optional<T> argumentExists = table[arg];
+      if (!argumentExists) {
+         std::runtime_error("Expected Argument: %s, \n"
+                            "It was missing or the wrong data type.");
+      }
+   }
+}
