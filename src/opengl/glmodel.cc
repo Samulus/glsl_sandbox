@@ -16,7 +16,7 @@
 
 GLModel::GLModel() {}
 
-GLModel GLModel::GLModelFromWavefront(std::string obj_path, std::string folder) {
+GLModel GLModel::loadFromWavefront(std::string obj_path, std::string folder) {
 
    std::vector<tinyobj::shape_t> shapes;
    std::vector<tinyobj::material_t> mtls;

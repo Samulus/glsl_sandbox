@@ -19,5 +19,5 @@ class GLModel {
       std::vector<GLuint> vertices;
       GLModel();
    public:
-      static GLModel GLModelFromWavefront(std::string, std::string);
+      static GLModel loadFromWavefront(std::string, std::string);
 };
