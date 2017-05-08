@@ -5,6 +5,7 @@
 
 #include "opengl_lua.h"
 #include "framebuffer.h"
+#include "glshader.h"
 
 void OpenGL_Lua::bind(sol::state& state) {
 
@@ -33,6 +34,11 @@ void OpenGL_Lua::bind(sol::state& state) {
          "bind",       &Framebuffer::bind,
          "unbind",     &Framebuffer::unbind,
          "addTexture", &Framebuffer::addTexture);
+
+   gl.new_usertype<GLShader>("Shader",
+         sol::constructors<GLShader(sol::table)>(),
+         "use",        &GLShader::use);
+
 }
 
 void OpenGL_Lua::bindGL3Enums(sol::table& table) {
