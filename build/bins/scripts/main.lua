@@ -1,7 +1,5 @@
--- create fbo
+-- setup MRT textures for deferred shading
 local fbo = gl.Framebuffer.new()
-
---- setup MRT textures for deferred shading
 fbo:addTexture {
    name     = 'position',
    location = 0,
@@ -12,8 +10,26 @@ fbo:addTexture {
    },
 }
 
+-- setup glsl
+local shader = gl.Shader.new {
+                  vertex   = "./models/suzanne/suzanne.vs",
+                  fragment = "./models/suzanne/suzanne.fs"
+               }
+
+-- setup model
+--[[
+local model = gl.Model.loadFromWavefront("suzanne.obj", "./models/suzanne")
+model:useVertexShader(vert);
+model:useFragmentShader(frag);
+
+-- setup camera
+local camera = gl.Camera.new()
+camera:translate()
+--]]
+
 function render()
    fbo:bind()
+   --model:render()
    fbo:unbind()
 
    imgui.NewFrame()
