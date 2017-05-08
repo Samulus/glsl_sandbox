@@ -12,9 +12,15 @@
 
 #define TINYOBJLOADER_IMPLEMENTATION
 #include "tiny_obj_loader.h"
+#include "glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 
 
-GLModel::GLModel() {}
+GLModel::GLModel() :
+   position(glm::vec3(0,0,0)),
+   rotation(glm::vec3(0,0,0)),
+      scale(glm::vec3(1,1,1)) {
+}
 
 GLModel GLModel::loadFromWavefront(std::string obj_path, std::string folder) {
 
