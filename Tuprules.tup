@@ -1,5 +1,5 @@
 # compiler settings
-CXX        = g++
+CXX        = clang++
 CXXFLAGS   = -g -std=c++1z -Wall -Wno-unused-function
 LDFLAGS    = -lSDL2 -lGLEW -lGL -lwren -llua -ldl
 
