@@ -1,11 +1,13 @@
 /*
  * opengl_lua.cc
  * Author: Samuel Vargas
+ * Date: 05/07/2017
  */
 
 #include "opengl_lua.h"
 #include "framebuffer.h"
 #include "glshader.h"
+#include "glmodel.h"
 
 void OpenGL_Lua::bind(sol::state& state) {
 
@@ -38,6 +40,10 @@ void OpenGL_Lua::bind(sol::state& state) {
    gl.new_usertype<GLShader>("Shader",
          sol::constructors<GLShader(sol::table)>(),
          "use",        &GLShader::use);
+
+   gl.new_usertype<GLModel>("Model",
+         "new", sol::no_constructor,
+         "loadFromWavefront", &GLModel::loadFromWavefront);
 
 }
 
