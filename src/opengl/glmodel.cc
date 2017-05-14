@@ -11,10 +11,10 @@
 #include "glmodel.h"
 
 #define TINYOBJLOADER_IMPLEMENTATION
+#include "util_lua.h"
 #include "tiny_obj_loader.h"
 #include "glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
-
 
 GLModel::GLModel() :
    position(glm::vec3(0,0,0)),
@@ -22,19 +22,31 @@ GLModel::GLModel() :
       scale(glm::vec3(1,1,1)) {
 }
 
-GLModel GLModel::loadFromWavefront(std::string obj_path, std::string folder) {
+GLModel GLModel::loadFromWavefront(sol::table args) {
+
+   Lua::throwIfMissingArgument<std::string>(args, "filename");
+   Lua::throwIfMissingArgument<std::string>(args, "baseDir");
+
+   auto baseDir  = args["baseDir"].get<std::string>();
+   auto filename = args["filename"].get<std::string>();
+
 
    std::vector<tinyobj::shape_t> shapes;
    std::vector<tinyobj::material_t> mtls;
+
    tinyobj::attrib_t attribs;
    std::string error;
    bool ok = tinyobj::LoadObj(
          &attribs, &shapes, &mtls, &error,
-         (folder + "/" + obj_path).c_str(),
-         (folder + "/").c_str()
+         (baseDir + "/" + filename).c_str(),
+         (baseDir + "/").c_str()
    );
 
-   if (!ok || !error.empty()) {
+   if (!ok && error.find("WARN: Material File")) {
+      std::cerr << error << std::endl;
+   }
+
+   else if (!ok) {
       throw std::runtime_error(error);
    }
 

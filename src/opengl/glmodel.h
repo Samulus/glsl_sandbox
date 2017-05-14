@@ -13,6 +13,7 @@
 #include <vector>
 #include <GL/glew.h>
 #include "vec3.hpp"
+#include "sol.h"
 
 class GLModel {
    private:
@@ -21,5 +22,5 @@ class GLModel {
       glm::vec3 position, rotation, scale;
       GLModel();
    public:
-      static GLModel loadFromWavefront(std::string, std::string);
+      static GLModel loadFromWavefront(sol::table);
 };
