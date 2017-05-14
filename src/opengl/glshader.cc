@@ -11,6 +11,7 @@
 #include "glshader.h"
 #include "util_lua.h"
 #include "util.h"
+#include "pathie.hpp"
 
 GLShader::GLShader(sol::table table) {
    Lua::throwIfMissingArgument<std::string>(table, "vertex");
@@ -21,6 +22,8 @@ GLShader::GLShader(sol::table table) {
 
    /// load vertex shader source code
    std::string vertexPath = table["vertex"].get<std::string>();
+
+   /// load vertex shader source code
    tmp.open(vertexPath);
    buffer << tmp.rdbuf();
    vertexSrc = buffer.str();
