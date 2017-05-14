@@ -23,10 +23,6 @@ local model = gl.Model.loadFromWavefront {
                   baseDir  = './models/suzanne'
               }
 
--- setup camera
-local camera = gl.Camera.new()
-camera:translate()
-
 function render()
    fbo:bind()
    --model:render()
