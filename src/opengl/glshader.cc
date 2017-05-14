@@ -7,7 +7,7 @@
 #include <string>
 #include <fstream>
 #include <sstream>
-#include <GL/glew.h>
+#include <glew.h>
 #include "glshader.h"
 #include "util_lua.h"
 #include "util.h"

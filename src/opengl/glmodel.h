@@ -11,7 +11,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
-#include <GL/glew.h>
+#include <glew.h>
 #include "vec3.hpp"
 #include "sol.h"
 

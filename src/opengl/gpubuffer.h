@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include <GL/glew.h>
+#include <glew.h>
 #include <SDL_opengl.h>
 #include <vector>
 #include <iostream>

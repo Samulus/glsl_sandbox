@@ -4,7 +4,7 @@
  * Date: 04/17/2017
  */
 
-#include <GL/glew.h>
+#include <glew.h>
 #include <SDL.h>
 #include <SDL_opengl.h>
 #include <iostream>

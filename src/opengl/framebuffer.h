@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include <GL/glew.h>
+#include <glew.h>
 #include <iostream>
 #include "gpubuffer.h"
 #include "video.h"

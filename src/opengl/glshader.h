@@ -5,7 +5,7 @@
  */
 
 #pragma once
-#include <GL/glew.h>
+#include <glew.h>
 #include "sol.h"
 
 class GLShader {
