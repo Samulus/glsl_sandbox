@@ -11,7 +11,6 @@
 #include "glshader.h"
 #include "util_lua.h"
 #include "util.h"
-#include "pathie.hpp"
 
 GLShader::GLShader(sol::table table) {
    Lua::throwIfMissingArgument<std::string>(table, "vertex");

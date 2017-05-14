@@ -20,17 +20,12 @@ local shader = gl.Shader.new {
 -- setup model
 local model = gl.Model.loadFromWavefront {
                   filename = 'suzanne.obj',
-                  cat  = './models/suzanne'
+                  baseDir  = './models/suzanne'
               }
 
---("suzanne.obj", "./models/suzanne")
---model:useVertexShader(vert);
---model:useFragmentShader(frag);
-
 -- setup camera
---local camera = gl.Camera.new()
---camera:translate()
---]]
+local camera = gl.Camera.new()
+camera:translate()
 
 function render()
    fbo:bind()
