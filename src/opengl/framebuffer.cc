@@ -10,7 +10,7 @@
  * creations.
  */
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include "framebuffer.h"
 #include "util.h"
 #include "video.h"

@@ -7,7 +7,7 @@
 #include <cstdlib>
 #include <cstdio>
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include <iostream>
 #include "video.h"
 #include "event.h"

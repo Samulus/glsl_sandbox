@@ -18,6 +18,7 @@ INCLUDE   += -isystem $(TUP_CWD)/src/lib/glm/simd
 
 # external paths
 INCLUDE   += -isystem /usr/include/GL/
+INCLUDE   += -isystem /usr/include/SDL2/
 
 # output directories
 BIN_DIR    = $(TUP_CWD)/build/bins

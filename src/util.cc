@@ -5,7 +5,7 @@
  */
 
 #include "util.h"
-#include <SDL2/SDL.h>
+#include <SDL.h>
 
 /// Return absolute path of binary
 std::string thisExePath() {

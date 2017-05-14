@@ -6,7 +6,7 @@
  * Event detection / retrevial for application
  */
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
 #include "event.h"
 #include "error.h"
 
