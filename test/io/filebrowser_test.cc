@@ -6,9 +6,10 @@
 #define CATCH_CONFIG_MAIN
 #include "../catch.hpp"
 
-#include "filebrowser.h"
+//#include "filebrowser.h"
 #include <iostream>
 
+/*
 TEST_CASE("FileBrowser::ls()", "[io]") {
    GIVEN ("Alphabet path") {
       auto fb = FileBrowser("/home/sam/music");
@@ -18,3 +19,4 @@ TEST_CASE("FileBrowser::ls()", "[io]") {
       }
    }
 }
+*/
