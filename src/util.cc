@@ -7,7 +7,8 @@
 #include "util.h"
 #include <SDL.h>
 
-/// Return absolute path of binary
+// Guaranteed to return a '/' or '\'
+// at end of path
 std::string thisExePath() {
    char* p = SDL_GetBasePath();
    std::string output = std::string(p);
