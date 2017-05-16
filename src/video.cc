@@ -21,8 +21,6 @@ Video& Video::getInstance() {
 }
 
 Video::Video() {
-   SDL_SetHint(SDL_HINT_VIDEO_HIGHDPI_DISABLED, "0");
-
    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0) {
       throw SDL_Exception("Cannot init SDL2: " + std::string(SDL_GetError()));
    }
@@ -41,6 +39,10 @@ Video::Video() {
        SDL_RENDERER_PRESENTVSYNC |
        SDL_WINDOW_OPENGL);
 
+   if (!window) {
+      throw std::runtime_error(std::string(SDL_GetError()));
+   }
+
    // setup sdl2 + opengl
    SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG);
    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
@@ -51,8 +53,6 @@ Video::Video() {
    glContext = SDL_GL_CreateContext(window);
    SDL_GL_MakeCurrent(window, &glContext);
 
-   // setup viewport
-   this->setViewport();
 
    // setup GLEW
    glewExperimental = 1;
@@ -65,6 +65,13 @@ Video::Video() {
       SDL_Log("Cannot create SDL2 Window: %s\n", SDL_GetError());
       throw SDL_Exception("Cannot init SDL2: " + std::string(SDL_GetError()));
    }
+
+   // setup viewport
+   this->setViewport();
+
+   float ddpi, hdpi, vdpi;
+   SDL_GetDisplayDPI(0, &ddpi, &hdpi ,&vdpi);
+   SDL_Log("%f %f %f\n", ddpi, hdpi, vdpi);
 }
 
 void Video::clear(float r, float g, float b) {
@@ -73,9 +80,7 @@ void Video::clear(float r, float g, float b) {
 }
 
 void Video::setViewport() {
-   int width  = SDL_GetWindowSurface(window)->w;
-   int height = SDL_GetWindowSurface(window)->h;
-   glViewport(0, 0, width, height);
+   glViewport(0, 0, width(), height());
 }
 
 void Video::present() {
@@ -83,11 +88,15 @@ void Video::present() {
 }
 
 int Video::height() const {
-   return SDL_GetWindowSurface(window)->h;
+   int height, dontcare;
+   SDL_GL_GetDrawableSize(this->window, &dontcare, &height);
+   return height;
 }
 
 int Video::width() const {
-   return SDL_GetWindowSurface(window)->w;
+   int width, dontcare;
+   SDL_GL_GetDrawableSize(this->window, &width, &dontcare);
+   return width;
 }
 
 SDL_Window* Video::getWindowPtr() const {
