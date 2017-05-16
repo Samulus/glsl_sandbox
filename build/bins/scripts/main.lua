@@ -23,6 +23,8 @@ local model = gl.Model.loadFromWavefront {
                   baseDir  = './models/suzanne'
               }
 
+imgui.SetFontSize(32)
+
 function render()
    fbo:bind()
    --model:render()

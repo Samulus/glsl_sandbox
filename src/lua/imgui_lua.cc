@@ -8,6 +8,7 @@
 #include "imgui_lua.h"
 #include "imgui_impl_sdl_gl3.h"
 #include "sol.h"
+#include "util.h"
 #include <functional>
 #include <iostream>
 
@@ -18,6 +19,8 @@ void ImGuiWrapper::bind(sol::state& lua, const Video& v) {
    ImGui_ImplSdlGL3_Init(video->getWindowPtr());
    lua.create_named_table("imgui");
    auto imgui = lua["imgui"];
+
+
    /// Core
    imgui["NewFrame"]              = ImGuiWrapper::NewFrame;
    imgui["Begin"]                 = ImGuiWrapper::Begin;
@@ -27,6 +30,7 @@ void ImGuiWrapper::bind(sol::state& lua, const Video& v) {
    imgui["Text"]                  = ImGuiWrapper::Text;
    imgui["Button"]                = ImGuiWrapper::Button;
    /// Settings
+   imgui["SetFontSize"]           = ImGuiWrapper::SetFontSize;
    imgui["EnableSoftwareMouse"]   = ImGuiWrapper::EnableSoftwareMouse;
    /// Misc
    imgui["ShowTestWindow"]        = ImGuiWrapper::ShowTestWindow;
@@ -64,6 +68,11 @@ bool ImGuiWrapper::Button(std::string msg, size_t width, size_t height) {
 /// Settings
 void ImGuiWrapper::EnableSoftwareMouse() {
    ImGui::GetIO().MouseDrawCursor = true;
+}
+
+void ImGuiWrapper::SetFontSize(size_t fontSize) {
+   ImGuiIO& io = ImGui::GetIO();
+   io.Fonts->AddFontFromFileTTF((thisExePath() + "assets/roboto.ttf").c_str(), fontSize);
 }
 
 /// Misc
