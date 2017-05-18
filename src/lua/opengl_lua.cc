@@ -8,6 +8,7 @@
 #include "framebuffer.h"
 #include "glshader.h"
 #include "glmodel.h"
+#include "glm.hpp"
 
 void OpenGL_Lua::bind(sol::state& state) {
 
@@ -17,6 +18,15 @@ void OpenGL_Lua::bind(sol::state& state) {
    OpenGL_Lua::bindCoreEnums(gl);
    OpenGL_Lua::bindFboEnums(gl);
 
+   /// glm
+   gl.new_usertype<glm::vec3>("vec3",
+         sol::constructors<glm::vec3(), glm::vec3(float, float, float)>(),
+         "x", &glm::vec3::x,
+         "y", &glm::vec3::y,
+         "z", &glm::vec3::z
+   );
+
+   /// Core OpenGL Stuff
    gl.create_named("GLVectorLen",
          "OneD",   GLVectorLen::OneD,
          "TwoD",   GLVectorLen::TwoD,
@@ -31,19 +41,26 @@ void OpenGL_Lua::bind(sol::state& state) {
          "insert",  static_cast<void (GPUBuffer::*)(unsigned char, sol::table)>(&GPUBuffer::insert)
    );
 
+   /// Framebuffers
    gl.new_usertype<Framebuffer>("Framebuffer",
          sol::constructors<Framebuffer()>(),
          "bind",       &Framebuffer::bind,
          "unbind",     &Framebuffer::unbind,
          "addTexture", &Framebuffer::addTexture);
 
+   /// Shaders
    gl.new_usertype<GLShader>("Shader",
          sol::constructors<GLShader(sol::table)>(),
          "use",        &GLShader::use);
 
+   /// Models
    gl.new_usertype<GLModel>("Model",
          "new", sol::no_constructor,
-         "loadFromWavefront", &GLModel::loadFromWavefront);
+         "loadFromWavefront", &GLModel::loadFromWavefront,
+         "getPosition",       &GLModel::getPosition,
+         "getRotation",       &GLModel::getRotation,
+         "getScale",          &GLModel::getScale
+   );
 
 }
 
