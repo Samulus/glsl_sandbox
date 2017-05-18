@@ -68,10 +68,6 @@ Video::Video() {
 
    // setup viewport
    this->setViewport();
-
-   float ddpi, hdpi, vdpi;
-   SDL_GetDisplayDPI(0, &ddpi, &hdpi ,&vdpi);
-   SDL_Log("%f %f %f\n", ddpi, hdpi, vdpi);
 }
 
 void Video::clear(float r, float g, float b) {
