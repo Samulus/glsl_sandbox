@@ -10,16 +10,16 @@
 namespace ImGuiWrapper {
    void bind(sol::state&, const Video&);
    /// Core
-   static void NewFrame();
-   static bool Begin(std::string, bool, int);
-   static void End();
-   static void Render();
+   static void newFrame();
+   static bool begin(std::string, bool, int);
+   static void end();
+   static void render();
    /// Widgets
-   static void Text(std::string);
-   static bool Button(std::string, size_t, size_t);
+   static void text(std::string);
+   static bool button(std::string, size_t, size_t);
    /// Settings
-   static void SetFontSize(size_t fontSize);
-   static void EnableSoftwareMouse();
+   static void setFontSize(size_t fontSize);
+   static void enableSoftwareMouse();
    /// Misc
-   static bool ShowTestWindow(bool);
+   static bool showTestWindow(bool);
 };

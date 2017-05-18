@@ -22,61 +22,61 @@ void ImGuiWrapper::bind(sol::state& lua, const Video& v) {
 
 
    /// Core
-   imgui["NewFrame"]              = ImGuiWrapper::NewFrame;
-   imgui["Begin"]                 = ImGuiWrapper::Begin;
-   imgui["End"]                   = ImGuiWrapper::End;
-   imgui["Render"]                = ImGuiWrapper::Render;
+   imgui["newFrame"]              = ImGuiWrapper::newFrame;
+   imgui["begin"]                 = ImGuiWrapper::begin;
+   imgui["end"]                   = ImGuiWrapper::end;
+   imgui["render"]                = ImGuiWrapper::render;
    /// Widgets
-   imgui["Text"]                  = ImGuiWrapper::Text;
-   imgui["Button"]                = ImGuiWrapper::Button;
+   imgui["text"]                  = ImGuiWrapper::text;
+   imgui["button"]                = ImGuiWrapper::button;
    /// Settings
-   imgui["SetFontSize"]           = ImGuiWrapper::SetFontSize;
-   imgui["EnableSoftwareMouse"]   = ImGuiWrapper::EnableSoftwareMouse;
+   imgui["setFontSize"]           = ImGuiWrapper::setFontSize;
+   imgui["enableSoftwareMouse"]   = ImGuiWrapper::enableSoftwareMouse;
    /// Misc
-   imgui["ShowTestWindow"]        = ImGuiWrapper::ShowTestWindow;
+   imgui["showTestWindow"]        = ImGuiWrapper::showTestWindow;
 }
 
 /// Core
-void ImGuiWrapper::NewFrame() {
+void ImGuiWrapper::newFrame() {
    assert(video != nullptr && "Create an instance of ImGuiWrapper before calling this method");
    ImGui_ImplSdlGL3_NewFrame(video->getWindowPtr());
 }
 
-bool ImGuiWrapper::Begin(std::string msg, bool collapse, int flags=0) {
+bool ImGuiWrapper::begin(std::string msg, bool collapse, int flags=0) {
    ImGui::Begin(msg.c_str(), &collapse, flags);
    return collapse;
 }
 
-void ImGuiWrapper::End() {
+void ImGuiWrapper::end() {
    ImGui::End();
 }
 
-void ImGuiWrapper::Render() {
+void ImGuiWrapper::render() {
    ImGui::Render();
 }
 
 
 /// Widgets
-void ImGuiWrapper::Text(std::string msg) {
+void ImGuiWrapper::text(std::string msg) {
    ImGui::Text("%s", msg.c_str());
 }
 
-bool ImGuiWrapper::Button(std::string msg, size_t width, size_t height) {
+bool ImGuiWrapper::button(std::string msg, size_t width, size_t height) {
    return ImGui::Button(msg.c_str(), ImVec2(width, height));
 }
 
 /// Settings
-void ImGuiWrapper::EnableSoftwareMouse() {
+void ImGuiWrapper::enableSoftwareMouse() {
    ImGui::GetIO().MouseDrawCursor = true;
 }
 
-void ImGuiWrapper::SetFontSize(size_t fontSize) {
+void ImGuiWrapper::setFontSize(size_t fontSize) {
    ImGuiIO& io = ImGui::GetIO();
    io.Fonts->AddFontFromFileTTF((thisExePath() + "assets/roboto.ttf").c_str(), fontSize);
 }
 
 /// Misc
-bool ImGuiWrapper::ShowTestWindow(bool open) {
+bool ImGuiWrapper::showTestWindow(bool open) {
    ImGui::ShowTestWindow(&open);
    return open;
 }

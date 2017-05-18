@@ -23,17 +23,14 @@ local model = gl.Model.loadFromWavefront {
                   baseDir  = './models/suzanne'
               }
 
-imgui.SetFontSize(32)
+imgui.setFontSize(32)
+sdl2.setWindowSize(0, 0, 1920, 1080)
 
 function render()
+   imgui.newFrame()
+   imgui.enableSoftwareMouse()
+   imgui.showTestWindow(true)
+   imgui.render()
    fbo:bind()
-   --model:render()
    fbo:unbind()
-
-   imgui.NewFrame()
-   --imgui.Begin("Hi", true, 0)
-   imgui.EnableSoftwareMouse()
-   imgui.ShowTestWindow(true)
-   --imgui.End()
-   imgui.Render();
 end
