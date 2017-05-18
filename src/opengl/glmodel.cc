@@ -52,3 +52,15 @@ GLModel GLModel::loadFromWavefront(sol::table args) {
 
    return GLModel();
 }
+
+glm::vec3 GLModel::getPosition() {
+   return this->position;
+}
+
+glm::vec3 GLModel::getRotation() {
+   return this->rotation;
+}
+
+glm::vec3 GLModel::getScale() {
+   return this->scale;
+}
