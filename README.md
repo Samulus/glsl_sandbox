@@ -12,4 +12,3 @@ small C++ utility to experiment with opengl
 * imgui
 * tiny_obj_loader
 * tinydir
-* whereami
