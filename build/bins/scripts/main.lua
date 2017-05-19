@@ -23,14 +23,25 @@ local model = gl.Model.loadFromWavefront {
                   baseDir  = './models/suzanne'
               }
 
-imgui.setFontSize(32)
-sdl2.setWindowSize(0, 0, 1920, 1080)
+imgui.setFontSize(24)
+sdl2.setWindowSize(1000, 800, 1920, 1080)
 
 function render()
    imgui.newFrame()
    imgui.enableSoftwareMouse()
    imgui.showTestWindow(true)
    imgui.render()
+
    fbo:bind()
+   model:bind()
+   shader:bind()
+   shader:upload {
+      { name = 'position', size = gl.enum.VEC3, data = model:getPosition()},
+      { name = 'scale',    size = gl.enum.VEC3, data = model:getScale()},
+      { name = 'rotation', size = gl.enum.VEC3, data = model:getRotation()},
+   }
+   model:render()
+   shader:unbind()
    fbo:unbind()
+   --fbo:render()
 end
