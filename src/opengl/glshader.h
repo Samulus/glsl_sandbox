@@ -15,5 +15,7 @@ class GLShader {
       static GLuint link(const GLuint& vertexShaderID, const GLuint& fragmentShaderID);
    public:
       GLShader(sol::table);
-      void use();
+      void bind();
+      void unbind();
+      void upload(sol::table);
 };

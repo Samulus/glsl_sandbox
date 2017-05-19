@@ -15,6 +15,7 @@
 GLShader::GLShader(sol::table table) {
    Lua::throwIfMissingArgument<std::string>(table, "vertex");
    Lua::throwIfMissingArgument<std::string>(table, "fragment");
+
    std::string fragmentSrc, vertexSrc;
    std::stringstream buffer;
    std::ifstream tmp;
@@ -96,6 +97,18 @@ GLuint GLShader::link(const GLuint& vertexShaderID, const GLuint& fragmentShader
    return programID;
 }
 
-void GLShader::use() {
+void GLShader::bind() {
    glUseProgram(this->programID);
+}
+
+void GLShader::unbind() {
+   glUseProgram(0);
+}
+
+void upload(sol::table dataArray) {
+   dataArray.for_each([] (sol::object key, sol::object value) {
+         /// if key is != int then fail
+         // if value is != table
+         //if (key
+   });
 }
