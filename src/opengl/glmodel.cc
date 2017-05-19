@@ -53,6 +53,9 @@ GLModel GLModel::loadFromWavefront(sol::table args) {
    return GLModel();
 }
 
+void render() {
+}
+
 glm::vec3 GLModel::getPosition() {
    return this->position;
 }

@@ -23,6 +23,7 @@ class GLModel {
       GLModel();
    public:
       static GLModel loadFromWavefront(sol::table);
+      void render();
       glm::vec3 getPosition();
       glm::vec3 getRotation();
       glm::vec3 getScale();
