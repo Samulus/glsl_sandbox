@@ -20,7 +20,7 @@ Script::Script(const std::string& path, const Video& video) {
    );
 
    ImGuiWrapper::bind(this->lua, video);
-   OpenGL_Lua::bind(this->lua);
+   OpenGLWrapper::bind(this->lua);
    SDL2Wrapper::bind(this->lua, video);
 
    this->lua.script_file(path);

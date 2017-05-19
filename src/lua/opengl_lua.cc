@@ -10,13 +10,13 @@
 #include "glmodel.h"
 #include "glm.hpp"
 
-void OpenGL_Lua::bind(sol::state& state) {
+void OpenGLWrapper::bind(sol::state& state) {
 
    auto gl = state.create_named_table("gl");
 
-   OpenGL_Lua::bindGL3Enums(gl);
-   OpenGL_Lua::bindCoreEnums(gl);
-   OpenGL_Lua::bindFboEnums(gl);
+   OpenGLWrapper::bindGL3Enums(gl);
+   OpenGLWrapper::bindCoreEnums(gl);
+   OpenGLWrapper::bindFboEnums(gl);
 
    /// glm
    gl.new_usertype<glm::vec3>("vec3",
@@ -46,12 +46,15 @@ void OpenGL_Lua::bind(sol::state& state) {
          sol::constructors<Framebuffer()>(),
          "bind",       &Framebuffer::bind,
          "unbind",     &Framebuffer::unbind,
-         "addTexture", &Framebuffer::addTexture);
+         "addTexture", &Framebuffer::addTexture
+   );
 
    /// Shaders
    gl.new_usertype<GLShader>("Shader",
          sol::constructors<GLShader(sol::table)>(),
-         "use",        &GLShader::use);
+         "bind",       &GLShader::bind,
+         "unbind",     &GLShader::unbind
+   );
 
    /// Models
    gl.new_usertype<GLModel>("Model",
@@ -64,7 +67,7 @@ void OpenGL_Lua::bind(sol::state& state) {
 
 }
 
-void OpenGL_Lua::bindGL3Enums(sol::table& table) {
+void OpenGLWrapper::bindGL3Enums(sol::table& table) {
 
    sol::optional<sol::table> hasEnumTable = table["enum"];
    sol::table e;
@@ -181,7 +184,7 @@ void OpenGL_Lua::bindGL3Enums(sol::table& table) {
 }
 
 /// taken from glew.h
-void OpenGL_Lua::bindCoreEnums(sol::table& table) {
+void OpenGLWrapper::bindCoreEnums(sol::table& table) {
    sol::optional<sol::table> hasEnumTable = table["enum"];
    sol::table e;
    if (!hasEnumTable) {
@@ -725,7 +728,7 @@ void OpenGL_Lua::bindCoreEnums(sol::table& table) {
    e["CLIENT_ALL_ATTRIB_BITS"] = 0xffffffff;
 }
 
-void OpenGL_Lua::bindFboEnums(sol::table& table) {
+void OpenGLWrapper::bindFboEnums(sol::table& table) {
    sol::optional<sol::table> hasEnumTable = table["enum"];
    sol::table e;
    if (!hasEnumTable) {

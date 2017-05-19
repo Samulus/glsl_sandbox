@@ -7,7 +7,7 @@
 #include "sol.h"
 #include "gpubuffer.h"
 
-namespace OpenGL_Lua {
+namespace OpenGLWrapper {
    void bind(sol::state&);
    void bindGL3Enums(sol::table&);
    void bindCoreEnums(sol::table&);
