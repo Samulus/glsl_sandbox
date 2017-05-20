@@ -4,9 +4,9 @@ fbo:addTexture {
    name     = 'position',
    location = 0,
    options  = {
-      gpuFormat   = gl.enum.RGB16F,
-      cpuFormat   = gl.enum.RGB,
-      cpuDataType = gl.enum.FLOAT,
+      gpuFormat   = gl.RGB16F,
+      cpuFormat   = gl.RGB,
+      cpuDataType = gl.FLOAT,
    },
 }
 
@@ -19,11 +19,17 @@ local shader = gl.Shader.new {
 
 -- setup model
 local model = gl.Model.loadFromWavefront {
-                  filename = 'suzanne.obj',
-                  baseDir  = './models/suzanne'
+                  filename    = 'suzanne.obj',
+                  baseDir     = './models/suzanne',
+                  triangulate = true,
+                  attributes  = {
+                     gl.GLAttrib.Position,
+                     gl.GLAttrib.Normal,
+                     gl.GLAttrib.Color,
+                  }
               }
 
-imgui.setFontSize(24)
+imgui.setFontSize(32)
 sdl2.setWindowSize(1000, 800, 1920, 1080)
 
 function render()
@@ -33,14 +39,14 @@ function render()
    imgui.render()
 
    fbo:bind()
-   model:bind()
+   --model:bind()
    shader:bind()
    shader:upload {
-      { name = 'position', size = gl.enum.VEC3, data = model:getPosition()},
-      { name = 'scale',    size = gl.enum.VEC3, data = model:getScale()},
-      { name = 'rotation', size = gl.enum.VEC3, data = model:getRotation()},
+      { name = 'position', vec3 = model:getPosition()},
+      { name = 'scale',    vec3 = model:getScale()},
+      { name = 'rotation', vec3 = model:getRotation()},
    }
-   model:render()
+   --model:render()
    shader:unbind()
    fbo:unbind()
    --fbo:render()
