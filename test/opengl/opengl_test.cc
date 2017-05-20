@@ -22,7 +22,7 @@ TEST_CASE("::GPUBuffer", "[opengl]") {
 
    GIVEN ("GPUBuffer is simple quad") {
       size_t numPoints = 4;
-      std::vector<GLVectorLen> vectorSizes = {GLVectorLen::TwoD};
+      std::vector<GLVec> vectorSizes = {GLVec::Vec2};
       auto gpuBuffer = GPUBuffer(numPoints, vectorSizes);
 
       WHEN("(Too Many Verts) 9 elements are inserted 4 pairs of 2D vectors (8)") {
@@ -38,8 +38,8 @@ TEST_CASE("::GPUBuffer", "[opengl]") {
 
    GIVEN("GPUBuffer is quad with 3 attributes") {
       size_t numPoints = 4;
-      std::vector<GLVectorLen> vectorSizes = {
-         GLVectorLen::ThreeD, GLVectorLen::TwoD, GLVectorLen::ThreeD,
+      std::vector<GLVec> vectorSizes = {
+         GLVec::Vec3, GLVec::Vec2, GLVec::Vec3,
       };
       auto gpuBuffer = GPUBuffer(numPoints, vectorSizes);
 
@@ -50,7 +50,7 @@ TEST_CASE("::GPUBuffer", "[opengl]") {
          gpuBuffer.insert(2, normals);
 
          const GLfloat* interleaved = gpuBuffer.getInterleavedBuffer();
-         REQUIRE(interleaved[0] == position[0]); 
+         REQUIRE(interleaved[0] == position[0]);
          REQUIRE(interleaved[1] == position[1]);
          REQUIRE(interleaved[2] == position[2]);
          REQUIRE(interleaved[3] == 0);
@@ -59,7 +59,7 @@ TEST_CASE("::GPUBuffer", "[opengl]") {
          REQUIRE(interleaved[6] == normals[1]);
          REQUIRE(interleaved[7] == normals[2]);
 
-         REQUIRE(interleaved[8]  == position[3]); 
+         REQUIRE(interleaved[8]  == position[3]);
          REQUIRE(interleaved[9]  == position[4]);
          REQUIRE(interleaved[10] == position[5]);
          REQUIRE(interleaved[11] == 0);

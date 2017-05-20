@@ -15,8 +15,9 @@
 #include "gltype.h"
 #include "../error.h"
 #include "util_lua.h"
+#include "glm.hpp"
 
-GPUBuffer::GPUBuffer(size_t numPoints, std::vector<GLVectorLen> vectorLen) {
+GPUBuffer::GPUBuffer(size_t numPoints, std::vector<GLVec> vectorLen) {
    this->numPoints = numPoints;
    this->vectorLen = vectorLen;
    this->vaoSet = false;
@@ -94,7 +95,7 @@ const GLfloat* GPUBuffer::getInterleavedBuffer() const {
 
 /// sol2 / lua
 GPUBuffer::GPUBuffer(size_t numPoints, sol::table vectorLen) :
-   GPUBuffer::GPUBuffer(numPoints, tableToVector<GLVectorLen>(vectorLen)) {
+   GPUBuffer::GPUBuffer(numPoints, tableToVector<GLVec>(vectorLen)) {
 }
 
 void GPUBuffer::insert(unsigned char position, sol::table newVertexData) {

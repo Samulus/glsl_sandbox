@@ -24,11 +24,11 @@ class GPUBuffer {
       GLuint vao, vbo, ebo;
       bool vaoSet, vboSet, eboSet;
       std::vector<GLuint> indices;
-      std::vector<GLVectorLen> vectorLen;
+      std::vector<GLVec> vectorLen;
       GLfloat* buffer;
       size_t numPoints;
    public:
-      GPUBuffer(size_t vertexCount, std::vector<GLVectorLen> vectorLen);
+      GPUBuffer(size_t vertexCount, std::vector<GLVec> vectorLen);
       void bind();
       void unbind();
       void insert(unsigned char position, std::vector<GLfloat> data);
@@ -61,7 +61,7 @@ namespace OpenGL {
    class MismatchVertexCount : public std::runtime_error {
       public:
          MismatchVertexCount(unsigned char position,
-                             std::vector<GLVectorLen> vectorLen,
+                             std::vector<GLVec> vectorLen,
                              size_t numPoints,
                              std::vector<GLfloat> newVertexData) :
             std::runtime_error(

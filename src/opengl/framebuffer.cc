@@ -16,7 +16,7 @@
 #include "video.h"
 
 Framebuffer::Framebuffer() :
-   buffer(GPUBuffer(4, std::vector<GLVectorLen>{GLVectorLen::ThreeD, GLVectorLen::TwoD})),
+   buffer(GPUBuffer(4, std::vector<GLVec>{GLVec::Vec3, GLVec::Vec2})),
    video(Video::getInstance()) {
    /// init fbo
    glGenFramebuffers(1, &this->fbo);
