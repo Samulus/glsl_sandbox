@@ -14,6 +14,7 @@
 #include <glew.h>
 #include "vec3.hpp"
 #include "sol.h"
+#include "gpubuffer.h"
 
 class GLModel {
    private:
@@ -23,6 +24,7 @@ class GLModel {
       GLModel();
    public:
       static GLModel loadFromWavefront(sol::table);
+      void bind();
       void render();
       glm::vec3 getPosition();
       glm::vec3 getRotation();

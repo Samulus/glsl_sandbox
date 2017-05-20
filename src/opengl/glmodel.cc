@@ -53,6 +53,9 @@ GLModel GLModel::loadFromWavefront(sol::table args) {
    return GLModel();
 }
 
+void bind() {
+}
+
 void render() {
 }
 
