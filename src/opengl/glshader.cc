@@ -11,6 +11,7 @@
 #include "glshader.h"
 #include "util_lua.h"
 #include "util.h"
+#include "glm.hpp"
 
 GLShader::GLShader(sol::table table) {
    Lua::throwIfMissingArgument<std::string>(table, "vertex");
@@ -105,10 +106,36 @@ void GLShader::unbind() {
    glUseProgram(0);
 }
 
-void upload(sol::table dataArray) {
+void GLShader::upload(sol::table dataArray) {
+
+   /*
+    * Expected Input:
+    * { name = 'position', vec3 = model:getPosition()},
+    * { name = 'scale',    vec3 = model:getScale()},
+    * { name = 'rotation', vec3 = model:getRotation()},
+    */
+
+   /// Argument sanity check
    dataArray.for_each([] (sol::object key, sol::object value) {
-         /// if key is != int then fail
-         // if value is != table
-         //if (key
+      /// Keys should be integers because its an array
+      if (key.get_type() != sol::type::number) {
+         throw std::runtime_error(
+               "This function expects an array of tables."
+               "You passed in a non integer as a key"
+         );
+      }
+
+      /// Values should be tables
+      if (value.get_type() != sol::type::table) {
+         throw std::runtime_error(
+               "This function expects an array of tables."
+               "You passed in a non table as a value"
+         );
+      }
+
+      /// Expect a name, size, and data in each table
+      Lua::throwIfMissingArgument<std::string>(value, "name");
+      Lua::throwIfMissingArgument<std::string>(value, "size");
+      Lua::throwIfMissingArgument<glm::vec3>(value, "vec3");
    });
 }
