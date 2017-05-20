@@ -50,6 +50,16 @@ GLModel GLModel::loadFromWavefront(sol::table args) {
       throw std::runtime_error(error);
    }
 
+   std::vector<GLVec> attributeSizes;
+
+   /// Create the internal representation of data attributes
+   /// based off what the user requested
+   /*
+   auto gpuBuffer = GPUBuffer(
+         attribs.vertices.size() / 3,
+   );
+   */
+
    return GLModel();
 }
 
