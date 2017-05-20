@@ -23,13 +23,11 @@ GLModel::GLModel() :
 }
 
 GLModel GLModel::loadFromWavefront(sol::table args) {
-
    Lua::throwIfMissingArgument<std::string>(args, "filename");
    Lua::throwIfMissingArgument<std::string>(args, "baseDir");
 
    auto baseDir  = args["baseDir"].get<std::string>();
    auto filename = args["filename"].get<std::string>();
-
 
    std::vector<tinyobj::shape_t> shapes;
    std::vector<tinyobj::material_t> mtls;
