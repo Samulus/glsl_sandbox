@@ -42,6 +42,7 @@ GLModel GLModel::loadFromWavefront(sol::table args) {
          (baseDir + "/").c_str()
    );
 
+   /// Forward warning about missing ".mtl" file to users
    if (!ok && error.find("WARN: Material File")) {
       std::cerr << error << std::endl;
    }
