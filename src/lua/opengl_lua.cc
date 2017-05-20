@@ -18,6 +18,20 @@ void OpenGLWrapper::bind(sol::state& state) {
    OpenGLWrapper::bindCoreEnums(gl);
    OpenGLWrapper::bindFboEnums(gl);
 
+   /// glsl_sandbox defined enums
+   gl.create_named("GLVec",
+         "Vec3", GLVec::Vec1,
+         "Vec2", GLVec::Vec2,
+         "Vec3", GLVec::Vec3,
+         "Vec4", GLVec::Vec4
+   );
+
+   gl.create_named("GLAttrib",
+         "Position", GLAttrib::Position,
+         "Color",    GLAttrib::Color,
+         "Normal",   GLAttrib::Normal
+   );
+
    /// glm
    gl.new_usertype<glm::vec3>("vec3",
          sol::constructors<glm::vec3(), glm::vec3(float, float, float)>(),
@@ -26,14 +40,7 @@ void OpenGLWrapper::bind(sol::state& state) {
          "z", &glm::vec3::z
    );
 
-   /// Core OpenGL Stuff
-   gl.create_named("GLVectorLen",
-         "OneD",   GLVectorLen::OneD,
-         "TwoD",   GLVectorLen::TwoD,
-         "ThreeD", GLVectorLen::ThreeD,
-         "FourD",  GLVectorLen::FourD
-   );
-
+   /// GPUBuffer
    gl.new_usertype<GPUBuffer>("GPUBuffer",
          sol::constructors<GPUBuffer(size_t, sol::table)>(),
          "bind",    &GPUBuffer::bind,
@@ -53,7 +60,8 @@ void OpenGLWrapper::bind(sol::state& state) {
    gl.new_usertype<GLShader>("Shader",
          sol::constructors<GLShader(sol::table)>(),
          "bind",       &GLShader::bind,
-         "unbind",     &GLShader::unbind
+         "unbind",     &GLShader::unbind,
+         "upload",     &GLShader::upload
    );
 
    /// Models

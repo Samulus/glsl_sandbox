@@ -5,9 +5,15 @@
  */
 
 #pragma once
-enum GLVectorLen {
-   OneD=1,
-   TwoD=2,
-   ThreeD=3,
-   FourD=4,
+enum GLVec {
+   Vec1=1,
+   Vec2=2,
+   Vec3=3,
+   Vec4=4,
+};
+
+enum GLAttrib {
+   Position,
+   Color,
+   Normal
 };
