@@ -3,7 +3,7 @@
  * Author: Samuel Vargas
  * Date: 04/17/2017
  *
- * General exceptions / error handling for application-wide 
+ * General exceptions / error handling for application-wide
  * runtime problems
  */
 
@@ -12,7 +12,7 @@
 
 class SDL_Exception : public std::runtime_error {
    public:
-      SDL_Exception(std::string msg) : std::runtime_error(msg) {} 
+      SDL_Exception(std::string msg) : std::runtime_error(msg) {}
 };
 
 class GL_Exception : public std::runtime_error {
