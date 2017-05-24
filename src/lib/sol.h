@@ -32,6 +32,9 @@
 #ifndef SOL_HPP
 #define SOL_HPP
 
+#define SOL_SAFE_FUNCTION
+#define SOL_CHECK_ARGUMENTS
+
 #if defined(UE_BUILD_DEBUG) || defined(UE_BUILD_DEVELOPMENT) || defined(UE_BUILD_TEST) || defined(UE_BUILD_SHIPPING) || defined(UE_SERVER)
 #define SOL_INSIDE_UNREAL
 #endif // Unreal Engine 4 bullshit
