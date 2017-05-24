@@ -1,17 +1,4 @@
--- setup MRT textures for deferred shading
-local fbo = gl.Framebuffer.new()
-fbo:addTexture {
-   name     = 'position',
-   location = 0,
-   options  = {
-      gpuFormat   = gl.RGB16F,
-      cpuFormat   = gl.RGB,
-      cpuDataType = gl.FLOAT,
-   },
-}
-
 -- setup glsl
--- Note: paths are relative to the BINARY, not this script
 local shader = gl.Shader.new {
                   vertex   = "./models/suzanne/suzanne.vs",
                   fragment = "./models/suzanne/suzanne.fs"
@@ -19,35 +6,42 @@ local shader = gl.Shader.new {
 
 -- setup model
 local model = gl.Model.loadFromWavefront {
-                  filename    = 'suzanne.obj',
+                  filename    = 'suzanne_tri.obj',
                   baseDir     = './models/suzanne',
-                  triangulate = true,
-                  attributes  = {
-                     gl.GLAttrib.Position,
-                     gl.GLAttrib.Normal,
-                     gl.GLAttrib.Color,
-                  }
               }
 
-imgui.setFontSize(32)
+-- setup camera
+
+-- setup projection matrix
+
+imgui.setFontSize(30)
 sdl2.setWindowSize(1000, 800, 1920, 1080)
 
-function render()
+function ui()
    imgui.newFrame()
    imgui.enableSoftwareMouse()
    imgui.showTestWindow(true)
    imgui.render()
+end
 
-   fbo:bind()
-   --model:bind()
+function monkey()
+   model:bind()
    shader:bind()
    shader:upload {
-      { name = 'position', vec3 = model:getPosition()},
-      { name = 'scale',    vec3 = model:getScale()},
-      { name = 'rotation', vec3 = model:getRotation()},
+      { name = 'proj',  data = gl.mat4.projection(45, 16/9, 0.1, 25)},
+      { name = 'view',  data = gl.mat4.identity()},
+      { name = 'model', data = model:getTransformationMatrix()},
    }
-   --model:render()
+   print(model:getTransformationMatrix()[1])
+   model:render()
+   model:unbind()
    shader:unbind()
-   fbo:unbind()
-   --fbo:render()
+end
+
+function render()
+   video.setViewport()
+   video.clear(0.3,0.3,0.3)
+   monkey()
+   ui()
+   video.present()
 end

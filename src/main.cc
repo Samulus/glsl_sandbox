@@ -42,12 +42,8 @@ int main() {
                break;
          }
       }
-
-      video.setViewport();
-      video.clear(0.0,0.0,0.0);
       script.fn("render");
-      video.present();
-
    }
+
    return 0;
 }
