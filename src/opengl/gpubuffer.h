@@ -25,7 +25,9 @@ class GPUBuffer {
       bool vaoSet, vboSet, eboSet;
       std::vector<GLuint> indices;
       std::vector<GLVec> vectorLen;
+      GLuint* indices_ptr;
       GLfloat* buffer;
+      size_t numElements;
       size_t numPoints;
    public:
       GPUBuffer(size_t vertexCount, std::vector<GLVec> vectorLen);

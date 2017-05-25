@@ -17,3 +17,6 @@ enum GLAttrib {
    Color,
    Normal
 };
+
+enum GLType {
+};

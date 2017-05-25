@@ -10,6 +10,7 @@
 #include "../catch.hpp"
 #include "gltype.h"
 #include "gpubuffer.h"
+#include <glew.h>
 #include <vector>
 
 TEST_CASE("::Framebuffer", "[opengl]"){

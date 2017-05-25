@@ -15,18 +15,23 @@
 #include "vec3.hpp"
 #include "sol.h"
 #include "gpubuffer.h"
+#include "glm.hpp"
 
 class GLModel {
    private:
       std::vector<GLuint> indices;
       std::vector<GLuint> vertices;
+      glm::mat4 trans;
       glm::vec3 position, rotation, scale;
-      GLModel();
+      GPUBuffer gpuBuffer;
+      GLModel(GPUBuffer gpuBuffer);
    public:
       static GLModel loadFromWavefront(sol::table);
       void bind();
+      void unbind();
       void render();
-      glm::vec3 getPosition();
-      glm::vec3 getRotation();
-      glm::vec3 getScale();
+      glm::vec3 getPosition() const;
+      glm::vec3 getRotation() const;
+      glm::vec3 getScale() const;
+      glm::mat4 getTransformationMatrix() const;
 };

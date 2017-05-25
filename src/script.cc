@@ -8,6 +8,7 @@
 #include "imgui_lua.h"
 #include "opengl_lua.h"
 #include "sdl2_lua.h"
+#include "video_lua.h"
 
 Script::Script(const std::string& path, const Video& video) {
    this->lua.open_libraries(
@@ -22,6 +23,7 @@ Script::Script(const std::string& path, const Video& video) {
    ImGuiWrapper::bind(this->lua, video);
    OpenGLWrapper::bind(this->lua);
    SDL2Wrapper::bind(this->lua, video);
+   VideoWrapper::bind(this->lua, video);
 
    this->lua.script_file(path);
 }

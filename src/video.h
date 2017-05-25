@@ -16,9 +16,9 @@ class Video {
       Video();
    public:
       static Video& getInstance();
-      void clear(float r, float g, float b);
-      void setViewport();
-      void present();
+      void clear(float r, float g, float b) const;
+      void setViewport() const;
+      void present() const;
       int width() const;
       int height() const;
       SDL_Window* getWindowPtr() const;
