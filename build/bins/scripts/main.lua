@@ -32,7 +32,6 @@ function monkey()
       { name = 'view',  data = gl.mat4.identity()},
       { name = 'model', data = model:getTransformationMatrix()},
    }
-   print(model:getTransformationMatrix()[1])
    model:render()
    model:unbind()
    shader:unbind()
