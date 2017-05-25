@@ -37,6 +37,9 @@ void Framebuffer::unbind() {
    glBindRenderbuffer(GL_RENDERBUFFER, 0);
 }
 
+void Framebuffer::render() {
+}
+
 /*
  * Appends and binds a new fullscreen texture for offscreen
  * rendering / post processing effects.
