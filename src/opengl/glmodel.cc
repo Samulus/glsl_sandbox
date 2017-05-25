@@ -15,12 +15,24 @@
 #include "tiny_obj_loader.h"
 #include "glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+#include "gpubuffer.h"
 
-GLModel::GLModel() :
+GLModel::GLModel(GPUBuffer gpuBuffer) :
+   trans(glm::mat4()),
    position(glm::vec3(0,0,0)),
    rotation(glm::vec3(0,0,0)),
-      scale(glm::vec3(1,1,1)) {
+      scale(glm::vec3(1,1,1)),
+   gpuBuffer(gpuBuffer) {
 }
+
+/*
+ * Load a Wavefront .obj file into the application
+ * Right now we operate under the assumption that:
+ *    - Each obj has an indices list (no triangulation is performed)
+ *    - Each obj has a position list (vec3: xyz)
+ *    - Each obj has normals list (vec3: xyz)
+ *    - Each obj has a color list
+ */
 
 GLModel GLModel::loadFromWavefront(sol::table args) {
    Lua::throwIfMissingArgument<std::string>(args, "filename");
@@ -49,33 +61,57 @@ GLModel GLModel::loadFromWavefront(sol::table args) {
       throw std::runtime_error(error);
    }
 
-   std::vector<GLVec> attributeSizes;
-
-   /// Create the internal representation of data attributes
-   /// based off what the user requested
-   /*
+   /// Load required vertex attributes into internal gpubuffer
+   /// (position, color, normal)
    auto gpuBuffer = GPUBuffer(
          attribs.vertices.size() / 3,
+         std::vector<GLVec> {
+            GLVec::Vec3,
+         }
    );
-   */
 
-   return GLModel();
+   /// Snatch indices from tinyobjloader
+   /// and store them in the internal GPUBuffer
+   /// for indexed rendering later on
+   std::vector<GLuint> indices;
+   for (const auto& i : shapes[0].mesh.indices) {
+      indices.push_back(i.vertex_index);
+   }
+
+   gpuBuffer.setEBO(indices);
+
+
+   /// Position
+   gpuBuffer.insert(0, attribs.vertices);   /// Position
+   //gpuBuffer.insert(1, attribs.normals);  /// Normals
+
+   return GLModel(gpuBuffer);
 }
 
-void bind() {
+void GLModel::bind() {
+   this->gpuBuffer.bind();
 }
 
-void render() {
+void GLModel::unbind() {
+   this->gpuBuffer.unbind();
 }
 
-glm::vec3 GLModel::getPosition() {
+void GLModel::render() {
+   this->gpuBuffer.renderEBO();
+}
+
+glm::vec3 GLModel::getPosition() const {
    return this->position;
 }
 
-glm::vec3 GLModel::getRotation() {
+glm::vec3 GLModel::getRotation() const {
    return this->rotation;
 }
 
-glm::vec3 GLModel::getScale() {
+glm::vec3 GLModel::getScale() const {
    return this->scale;
+}
+
+glm::mat4 GLModel::getTransformationMatrix() const {
+   return this->trans;
 }
