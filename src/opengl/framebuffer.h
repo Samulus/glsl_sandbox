@@ -28,4 +28,5 @@ class Framebuffer {
       void bind();
       void unbind();
       void addTexture(sol::table);
+      void render();
 };
