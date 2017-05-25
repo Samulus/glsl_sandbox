@@ -9,6 +9,7 @@
 #include "glshader.h"
 #include "glmodel.h"
 #include "glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 
 void OpenGLWrapper::bind(sol::state& state) {
 
@@ -32,6 +33,18 @@ void OpenGLWrapper::bind(sol::state& state) {
          "Normal",   GLAttrib::Normal
    );
 
+   /// Register mat4s as existing in Lua
+   gl.new_usertype<glm::mat4>("mat4",
+         sol::constructors<glm::mat4()>()
+   );
+
+   gl["mat4"]["projection"] =
+      [] (float fov, float aspect, float near, float far) {
+            return glm::perspective(fov, aspect, near, far);
+   };
+
+   gl["mat4"]["identity"] = []  { return glm::mat4(); };
+
    /// glm
    gl.new_usertype<glm::vec3>("vec3",
          sol::constructors<glm::vec3(), glm::vec3(float, float, float)>(),
@@ -53,7 +66,8 @@ void OpenGLWrapper::bind(sol::state& state) {
          sol::constructors<Framebuffer()>(),
          "bind",       &Framebuffer::bind,
          "unbind",     &Framebuffer::unbind,
-         "addTexture", &Framebuffer::addTexture
+         "addTexture", &Framebuffer::addTexture,
+         "render",     &Framebuffer::render
    );
 
    /// Shaders
@@ -67,10 +81,14 @@ void OpenGLWrapper::bind(sol::state& state) {
    /// Models
    gl.new_usertype<GLModel>("Model",
          "new", sol::no_constructor,
-         "loadFromWavefront", &GLModel::loadFromWavefront,
-         "getPosition",       &GLModel::getPosition,
-         "getRotation",       &GLModel::getRotation,
-         "getScale",          &GLModel::getScale
+         "loadFromWavefront",       &GLModel::loadFromWavefront,
+         "getPosition",             &GLModel::getPosition,
+         "getRotation",             &GLModel::getRotation,
+         "getScale",                &GLModel::getScale,
+         "getTransformationMatrix", &GLModel::getTransformationMatrix,
+         "bind",                    &GLModel::bind,
+         "unbind",                  &GLModel::unbind,
+         "render",                  &GLModel::render
    );
 
 }
