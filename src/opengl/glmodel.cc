@@ -11,6 +11,7 @@
 #include "glmodel.h"
 
 #define TINYOBJLOADER_IMPLEMENTATION
+#include <SDL.h>
 #include "util_lua.h"
 #include "tiny_obj_loader.h"
 #include "glm.hpp"
@@ -23,6 +24,19 @@ GLModel::GLModel(GPUBuffer gpuBuffer) :
    rotation(glm::vec3(0,0,0)),
       scale(glm::vec3(1,1,1)),
    gpuBuffer(gpuBuffer) {
+}
+
+
+GLModel GLModel::loadFromRawArray(sol::table args) {
+   auto vertices = tableToVector<GLfloat>(args["vertices"]);
+   //auto normals  = tableToVector<GLfloat>(args["normals"]);
+
+   auto gpuBuffer = GPUBuffer(vertices.size() / 3,
+         std::vector<GLVec>{GLVec::Vec3});
+
+   gpuBuffer.insert(0, vertices);
+
+   return GLModel(gpuBuffer);
 }
 
 /*
@@ -61,15 +75,6 @@ GLModel GLModel::loadFromWavefront(sol::table args) {
       throw std::runtime_error(error);
    }
 
-   /// Load required vertex attributes into internal gpubuffer
-   /// (position, color, normal)
-   auto gpuBuffer = GPUBuffer(
-         attribs.vertices.size() / 3,
-         std::vector<GLVec> {
-            GLVec::Vec3,
-         }
-   );
-
    /// Snatch indices from tinyobjloader
    /// and store them in the internal GPUBuffer
    /// for indexed rendering later on
@@ -78,26 +83,22 @@ GLModel GLModel::loadFromWavefront(sol::table args) {
       indices.push_back(i.vertex_index);
    }
 
-   gpuBuffer.setEBO(indices);
+   /// Load required vertex attributes into internal gpubuffer
+   /// (position, color, normal)
+   auto gpuBuffer = GPUBuffer(
+         attribs.vertices.size() / 3,
+         std::vector<GLVec> { GLVec::Vec3, GLVec::Vec3 }
+   );
 
-
-   /// Position
    gpuBuffer.insert(0, attribs.vertices);   /// Position
-   //gpuBuffer.insert(1, attribs.normals);  /// Normals
+   gpuBuffer.insert(1, attribs.normals);    /// Normals
+   gpuBuffer.setEBO(indices);
 
    return GLModel(gpuBuffer);
 }
 
-void GLModel::bind() {
-   this->gpuBuffer.bind();
-}
-
-void GLModel::unbind() {
-   this->gpuBuffer.unbind();
-}
-
 void GLModel::render() {
-   this->gpuBuffer.renderEBO();
+   this->gpuBuffer.render();
 }
 
 glm::vec3 GLModel::getPosition() const {

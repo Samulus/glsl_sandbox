@@ -27,6 +27,7 @@ class GLModel {
       GLModel(GPUBuffer gpuBuffer);
    public:
       static GLModel loadFromWavefront(sol::table);
+      static GLModel loadFromRawArray(sol::table);
       void bind();
       void unbind();
       void render();
