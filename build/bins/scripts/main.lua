@@ -6,35 +6,28 @@ local shader = gl.Shader.new {
 
 -- setup model
 local model = gl.Model.loadFromWavefront {
-                  filename    = 'suzanne_tri.obj',
-                  baseDir     = './models/suzanne',
+                  filename    = 'suzanne.obj',
+                  baseDir     = './models/suzanne/',
               }
 
--- setup camera
-
 -- setup projection matrix
-
 imgui.setFontSize(30)
 sdl2.setWindowSize(1000, 800, 1920, 1080)
 
 function ui()
    imgui.newFrame()
    imgui.enableSoftwareMouse()
-   imgui.showTestWindow(true)
+   --imgui.showTestWindow(true)
    imgui.render()
 end
 
 function monkey()
-   model:bind()
-   shader:bind()
    shader:upload {
       { name = 'proj',  data = gl.mat4.projection(45, 16/9, 0.1, 25)},
       { name = 'view',  data = gl.mat4.identity()},
       { name = 'model', data = model:getTransformationMatrix()},
    }
    model:render()
-   model:unbind()
-   shader:unbind()
 end
 
 function render()
