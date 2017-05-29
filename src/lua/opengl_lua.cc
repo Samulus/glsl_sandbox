@@ -56,8 +56,6 @@ void OpenGLWrapper::bind(sol::state& state) {
    /// GPUBuffer
    gl.new_usertype<GPUBuffer>("GPUBuffer",
          sol::constructors<GPUBuffer(size_t, sol::table)>(),
-         "bind",    &GPUBuffer::bind,
-         "unbind",  &GPUBuffer::unbind,
          "insert",  static_cast<void (GPUBuffer::*)(unsigned char, sol::table)>(&GPUBuffer::insert)
    );
 
@@ -73,21 +71,18 @@ void OpenGLWrapper::bind(sol::state& state) {
    /// Shaders
    gl.new_usertype<GLShader>("Shader",
          sol::constructors<GLShader(sol::table)>(),
-         "bind",       &GLShader::bind,
-         "unbind",     &GLShader::unbind,
          "upload",     &GLShader::upload
    );
 
    /// Models
    gl.new_usertype<GLModel>("Model",
          "new", sol::no_constructor,
+         "loadFromRawArray",        &GLModel::loadFromRawArray,
          "loadFromWavefront",       &GLModel::loadFromWavefront,
          "getPosition",             &GLModel::getPosition,
          "getRotation",             &GLModel::getRotation,
          "getScale",                &GLModel::getScale,
          "getTransformationMatrix", &GLModel::getTransformationMatrix,
-         "bind",                    &GLModel::bind,
-         "unbind",                  &GLModel::unbind,
          "render",                  &GLModel::render
    );
 
