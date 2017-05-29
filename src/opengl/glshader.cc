@@ -8,10 +8,12 @@
 #include <fstream>
 #include <sstream>
 #include <glew.h>
+#include <SDL.h>
 #include "glshader.h"
 #include "util_lua.h"
 #include "util.h"
 #include "glm.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 GLShader::GLShader(sol::table table) {
    Lua::throwIfMissingArgument<std::string>(table, "vertex");
@@ -98,14 +100,6 @@ GLuint GLShader::link(const GLuint& vertexShaderID, const GLuint& fragmentShader
    return programID;
 }
 
-void GLShader::bind() {
-   glUseProgram(this->programID);
-}
-
-void GLShader::unbind() {
-   glUseProgram(0);
-}
-
 void GLShader::upload(sol::table dataArray) {
 
    /*
@@ -115,8 +109,10 @@ void GLShader::upload(sol::table dataArray) {
     * { name = 'rotation', vec3 = model:getRotation()},
     */
 
+   glUseProgram(this->programID);
+
    /// Argument sanity check
-   dataArray.for_each([] (sol::object key, sol::object value) {
+   dataArray.for_each([&] (sol::object key, sol::object value) {
       /// Keys should be integers because its an array
       if (key.get_type() != sol::type::number) {
          throw std::runtime_error(
@@ -133,9 +129,21 @@ void GLShader::upload(sol::table dataArray) {
          );
       }
 
+      const auto subTable = dataArray[key];
+
+      Lua::throwIfMissingArgument<std::string>(subTable, "name");
+      Lua::throwIfMissingArgument<std::string>(subTable, "data");
+
+      const auto name  = subTable["name"].get<std::string>();
+
+      // TODO: This won't always be a mat4, it can be any type
+      // and we need to switch and dynaical
+      const glm::mat4 neo  = subTable["data"].get<glm::mat4>();
+
+      // TODO: Do not assume every single uploaded matrix is a '4fv'
+      const auto uniLocation = glGetUniformLocation(this->programID, name.c_str());
+      glUniformMatrix4fv(uniLocation, 1, GL_FALSE, glm::value_ptr(neo));
+
       /// Expect a name, size, and data in each table
-      Lua::throwIfMissingArgument<std::string>(value, "name");
-      Lua::throwIfMissingArgument<std::string>(value, "size");
-      Lua::throwIfMissingArgument<glm::vec3>(value, "vec3");
    });
 }
