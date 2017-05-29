@@ -13,7 +13,7 @@ template <typename T>
 std::vector<T> tableToVector(sol::table table) {
    std::vector<T> output;
    for (size_t i=1; i <= table.size(); ++i) {
-      output.push_back((T)table[i]);
+      output.push_back(table[i].get<T>());
    }
    return output;
 }
