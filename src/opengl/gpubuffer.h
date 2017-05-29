@@ -20,27 +20,21 @@
 #include "util.h"
 
 class GPUBuffer {
-   private:
+   public:
       GLuint vao, vbo, ebo;
-      bool vaoSet, vboSet, eboSet;
+      std::vector<GLfloat> buffer;
       std::vector<GLuint> indices;
-      std::vector<GLVec> vectorLen;
-      GLuint* indices_ptr;
-      GLfloat* buffer;
+      std::vector<GLVec> attribLen;
       size_t numElements;
       size_t numPoints;
    public:
-      GPUBuffer(size_t vertexCount, std::vector<GLVec> vectorLen);
-      void bind();
-      void unbind();
+      GPUBuffer(size_t vertexCount, std::vector<GLVec> attribLen);
       void insert(unsigned char position, std::vector<GLfloat> data);
+      void finalize();
       void setEBO(std::vector<GLuint> indices);
-      const GLfloat* getInterleavedBuffer() const;
-      void renderTri();
-      void renderEBO();
-      void renderLines();
+      void render();
    public: // sol2 / lua
-      GPUBuffer(size_t numPoints, sol::table vectorLen);
+      GPUBuffer(size_t numPoints, sol::table attribLen);
       void insert(unsigned char, sol::table);
       void setEBO(sol::table);
 };
@@ -54,23 +48,23 @@ namespace OpenGL {
 
    class InvalidAttributePosition : public std::range_error {
       public:
-         InvalidAttributePosition(unsigned char position, std::vector<GLfloat> data) :
+         InvalidAttributePosition(unsigned char position, size_t maxCapacity) :
             std::range_error(
                   strFormat("Position (%d) is out of bounds, expected [0 .. %d]",
-                     position, data.size() - 1)){}
+                     position, maxCapacity - 1)){}
    };
 
    class MismatchVertexCount : public std::runtime_error {
       public:
          MismatchVertexCount(unsigned char position,
-                             std::vector<GLVec> vectorLen,
+                             std::vector<GLVec> attribLen,
                              size_t numPoints,
                              std::vector<GLfloat> newVertexData) :
             std::runtime_error(
-                  strFormat("GPUBuffer has numPoints=%d and vectorLen[%d] = %d but "
-                               "GPUBuffer::insert was called with %d elements"
-                               "instead (expected %d elements instead)",
-                               numPoints, position, vectorLen[position], newVertexData.size(),
-                               vectorLen[position] * numPoints)) {}
+                  strFormat("GPUBuffer has numVertices=%d and attribLen[%d] = %d but "
+                               "GPUBuffer::insert was called with %d elements "
+                               "instead (expected %d elements)",
+                               numPoints, position, attribLen[position], newVertexData.size(),
+                               attribLen[position] * numPoints)) {}
       };
 }
