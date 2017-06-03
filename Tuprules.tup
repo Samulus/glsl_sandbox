@@ -1,12 +1,12 @@
 # compiler settings
 CXX        = clang++
 CXXFLAGS   = -g -std=c++1z -Wall -Wno-unused-function
-LDFLAGS    = -lSDL2 -lGLEW -lGL -lwren -llua -ldl
+LDFLAGS    = -lSDL2 -lGLEW -lGL -llua -ldl
 
 # internal code to include
-INCLUDE     = -I$(TUP_CWD)/src/
-INCLUDE    += -I$(TUP_CWD)/src/opengl/
-INCLUDE    += -I$(TUP_CWD)/src/lua/
+INCLUDE    = -I$(TUP_CWD)/src/
+INCLUDE   += -I$(TUP_CWD)/src/opengl/
+INCLUDE   += -I$(TUP_CWD)/src/lua/
 
 # libraries to include
 INCLUDE   += -isystem $(TUP_CWD)/src/lib/
