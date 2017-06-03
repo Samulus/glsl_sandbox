@@ -17,6 +17,7 @@
 #include "glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "gpubuffer.h"
+#include "glm/ext.hpp"
 
 GLModel::GLModel(GPUBuffer gpuBuffer) :
    trans(glm::mat4()),
@@ -113,6 +114,19 @@ glm::vec3 GLModel::getScale() const {
    return this->scale;
 }
 
+void GLModel::setScale(glm::vec3 factor) {
+   this->trans = glm::scale(this->trans, factor);
+}
+
 glm::mat4 GLModel::getTransformationMatrix() const {
    return this->trans;
+}
+
+std::vector<float> GLModel::getTransformationVector() const {
+   std::vector<float> output;
+   const float *p = (const float*)glm::value_ptr(this->trans);
+   for (size_t i=0; i < 16; ++i) {
+      output.push_back(p[i]);
+   }
+   return output;
 }

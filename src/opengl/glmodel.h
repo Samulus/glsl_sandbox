@@ -34,5 +34,7 @@ class GLModel {
       glm::vec3 getPosition() const;
       glm::vec3 getRotation() const;
       glm::vec3 getScale() const;
-      glm::mat4 getTransformationMatrix() const;
+      void setScale(glm::vec3);
+      glm::mat4  getTransformationMatrix() const;
+      std::vector<float> getTransformationVector() const;
 };

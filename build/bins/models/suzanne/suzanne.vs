@@ -7,7 +7,11 @@ out vec4 vertexColor;
 
 uniform mat4 proj, view, model;
 
+mat4 other = mat4(1);
+
 void main() {
-   gl_Position = proj * view * model * vec4(position, 1.0);
-   vertexColor = vec4(normal, 1.0);
+     gl_Position = proj * view * model * vec4(position, 1.0);
+   //gl_Position = proj * other * vec4(position, 1.0);
+   //gl_Position = other * vec4(position, 1.0);
+   vertexColor = vec4(position, 1.0);
 }

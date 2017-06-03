@@ -1,39 +1,40 @@
--- setup glsl
+local inspect = require "scripts/inspect"
+local      ui = require "scripts/ui"
+
 local shader = gl.Shader.new {
                   vertex   = "./models/suzanne/suzanne.vs",
                   fragment = "./models/suzanne/suzanne.fs"
                }
 
--- setup model
-local model = gl.Model.loadFromWavefront {
+local monkey = gl.Model.loadFromWavefront {
                   filename    = 'suzanne.obj',
-                  baseDir     = './models/suzanne/',
+                  baseDir     = './models/suzanne',
               }
 
--- setup projection matrix
 imgui.setFontSize(30)
-sdl2.setWindowSize(1000, 800, 1920, 1080)
+sdl2.setWindowSize(1000, 800, 800, 600)
+monkey:setScale(gl.vec3.new(0.5,0.5,0.5))
 
-function ui()
-   imgui.newFrame()
-   imgui.enableSoftwareMouse()
-   --imgui.showTestWindow(true)
-   imgui.render()
-end
-
-function monkey()
-   shader:upload {
-      { name = 'proj',  data = gl.mat4.projection(45, 16/9, 0.1, 25)},
-      { name = 'view',  data = gl.mat4.identity()},
-      { name = 'model', data = model:getTransformationMatrix()},
-   }
-   model:render()
-end
+local proj  = gl.mat4.projection(120, 16/9, 0.1, 50)
+local view  = gl.mat4.identity()
+local model = monkey:getTransformationMatrix()
 
 function render()
    video.setViewport()
    video.clear(0.3,0.3,0.3)
-   monkey()
-   ui()
+   shader:upload {
+      { name = 'proj',  data = gl.mat4.projection(120, 16/9, 0.1, 100)},
+      { name = 'view',  data = gl.mat4.identity()},
+      { name = 'model', data = monkey:getTransformationMatrix()},
+   }
+
+   monkey:render()
+   imgui.newFrame()
+      print(inspect(proj[1]))
+      --proj  = ui.matrixEdit("Proj",  gl.mat4.toVector(gl.mat4.projection(120, 16/9, 0.1, 100)));
+      --view  = ui.matrixEdit("View",  gl.mat4.toVector(gl.mat4.identity()));
+      --model = ui.matrixEdit("Model", gl.mat4.toVector(monkey:getTransformationMatrix()))
+   imgui.render()
+
    video.present()
 end
