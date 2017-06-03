@@ -14,10 +14,8 @@
 #include <SDL.h>
 #include "util_lua.h"
 #include "tiny_obj_loader.h"
-#include "glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
 #include "gpubuffer.h"
-#include "glm/ext.hpp"
+#include "glm.h"
 
 GLModel::GLModel(GPUBuffer gpuBuffer) :
    trans(glm::mat4()),

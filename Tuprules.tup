@@ -11,10 +11,6 @@ INCLUDE   += -I$(TUP_CWD)/src/lua/
 # libraries to include
 INCLUDE   += -isystem $(TUP_CWD)/src/lib/
 INCLUDE   += -isystem $(TUP_CWD)/src/lib/imgui/
-INCLUDE   += -isystem $(TUP_CWD)/src/lib/glm/
-INCLUDE   += -isystem $(TUP_CWD)/src/lib/glm/gtx
-INCLUDE   += -isystem $(TUP_CWD)/src/lib/glm/gtc
-INCLUDE   += -isystem $(TUP_CWD)/src/lib/glm/simd
 
 # external paths
 INCLUDE   += -isystem /usr/include/GL/

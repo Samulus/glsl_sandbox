@@ -9,8 +9,6 @@
 #include "glshader.h"
 #include "glmodel.h"
 #include "glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
-#include "glm/ext.hpp"
 
 void OpenGLWrapper::bind(sol::state& state) {
 
