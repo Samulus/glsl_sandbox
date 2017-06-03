@@ -1,0 +1,3 @@
+[submodule "src/lib/gml"]
+	path = src/lib/gml
+	url = git@github.com:https://github.com/ilmola/gml.git
