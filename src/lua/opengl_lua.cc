@@ -10,6 +10,7 @@
 #include "glmodel.h"
 #include "glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+#include "glm/ext.hpp"
 
 void OpenGLWrapper::bind(sol::state& state) {
 
@@ -34,9 +35,6 @@ void OpenGLWrapper::bind(sol::state& state) {
    );
 
    /// Register mat4s as existing in Lua
-   gl.new_usertype<glm::mat4>("mat4",
-         sol::constructors<glm::mat4()>()
-   );
 
    gl["mat4"]["projection"] =
       [] (float fov, float aspect, float near, float far) {
@@ -44,6 +42,15 @@ void OpenGLWrapper::bind(sol::state& state) {
    };
 
    gl["mat4"]["identity"] = []  { return glm::mat4(); };
+
+   gl["mat4"]["toVector"] = [] (glm::mat4 mat4) {
+                                    const float *p = (const float*)glm::value_ptr(mat4);
+                                    std::vector<float> output;
+                                    for (size_t i=0; i < 16  ;++i)  {
+                                       output.push_back(p[i]);
+                                    }
+                                    return output;
+                               };
 
    /// glm
    gl.new_usertype<glm::vec3>("vec3",
@@ -82,7 +89,9 @@ void OpenGLWrapper::bind(sol::state& state) {
          "getPosition",             &GLModel::getPosition,
          "getRotation",             &GLModel::getRotation,
          "getScale",                &GLModel::getScale,
+         "setScale",                &GLModel::setScale,
          "getTransformationMatrix", &GLModel::getTransformationMatrix,
+         "getTransformationVector", &GLModel::getTransformationVector,
          "render",                  &GLModel::render
    );
 
