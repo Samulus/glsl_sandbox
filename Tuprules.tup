@@ -1,5 +1,5 @@
 # compiler settings
-CXX        = clang++
+CXX        = g++
 CXXFLAGS   = -g -std=c++1z -Wall -Wno-unused-function
 LDFLAGS    = -lSDL2 -lGLEW -lGL -llua -ldl
 
@@ -11,7 +11,7 @@ INCLUDE   += -I$(TUP_CWD)/src/lua/
 # libraries to include
 INCLUDE   += -isystem $(TUP_CWD)/src/lib/
 INCLUDE   += -isystem $(TUP_CWD)/src/lib/imgui/
-INCLUDE   += -isystem $(TUP_CWD)/src/lib/glm/include/glm/
+INCLUDE   += -isystem $(TUP_CWD)/src/lib/gml/include/gml/
 
 # external paths
 INCLUDE   += -isystem /usr/include/GL/
