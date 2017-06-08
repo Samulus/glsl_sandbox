@@ -1,11 +1,11 @@
 local ui = {}
 
-function globalMenu()
-   imgui.newFrame()
-   imgui.enableSoftwareMouse()
+-----------------------------------------------------
+-- Display a global menu
+-----------------------------------------------------
 
+ui.globalMenu = function()
    local item;
-
    if imgui.beginMainMenuBar() then
       if imgui.beginMenu("Matrices") then
          if imgui.menuItem("Proj",  false, true) then item = "Proj"  end
@@ -15,36 +15,46 @@ function globalMenu()
       end
       imgui.endMainMenuBar()
    end
-
-   imgui.render()
    return item;
 end
 
 -----------------------------------------------------
 -- Display a window with an editable matrix view,
 -- Args:
---    Title: (string)
---    mat4:  (float[16])
+--    @title:   (string)
+--    @matrix:  (gml.mat4)
 -- Returns:
 --    The modified matrix
+-- Notes:
+--    Matrix is COLUMN MAJOR
 -----------------------------------------------------
 
-ui.matrixEdit = function(title, mat4)
+ui.matrixEdit = function(title, matrix)
    imgui.begin(title)
-   for i=1, 16 do
-      imgui.pushItemWidth(100)
-      imgui.pushID(i)
-      _, mat4[i] = imgui.inputFloat("", mat4[i])
-      imgui.popID(i)
-      if i % 4 ~= 0 then
-         imgui.sameLine(0, 10)
+
+   --- Matrix View
+   imgui.text("Matrix:")
+   local id=1
+   for y=1, 4 do
+      for x=1, 4 do
+         imgui.pushItemWidth(100)
+         imgui.pushID(id)
+         _, v = imgui.inputFloat("", matrix[x][y])
+         imgui.popID(id)
+         if x % 4 ~= 0 then imgui.sameLine(0, 10) end
+         imgui.popItemWidth()
+         id = id + 1
       end
-      imgui.popItemWidth()
    end
 
-   imgui._end()
+   --- Controls
+   imgui.text("Controls:")
 
-   return mat4
+   imgui.sliderFloat("X ", matrix[1][1], -3.0, 3.0, "%.3f", 1)
+   imgui.sliderFloat("Y ", matrix[2][2], -3.0, 3.0, "%.3f", 1)
+   imgui.sliderFloat("Z ", matrix[3][3], -3.0, 3.0, "%.3f", 1)
+
+   imgui._end()
 end
 
 return ui;
