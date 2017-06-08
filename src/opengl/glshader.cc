@@ -12,8 +12,8 @@
 #include "glshader.h"
 #include "util_lua.h"
 #include "util.h"
-#include "glm.hpp"
-#include "glm/gtc/type_ptr.hpp"
+#include "gml.hpp"
+#include "gml_lua.h"
 
 GLShader::GLShader(sol::table table) {
    Lua::throwIfMissingArgument<std::string>(table, "vertex");
@@ -138,11 +138,11 @@ void GLShader::upload(sol::table dataArray) {
 
       // TODO: This won't always be a mat4, it can be any type
       // and we need to switch and dynaical
-      const glm::mat4 neo  = subTable["data"].get<glm::mat4>();
+      const gml::mat4 neo  = subTable["data"].get<gml::mat4>();
 
       // TODO: Do not assume every single uploaded matrix is a '4fv'
       const auto uniLocation = glGetUniformLocation(this->programID, name.c_str());
-      glUniformMatrix4fv(uniLocation, 1, GL_FALSE, glm::value_ptr(neo));
+      glUniformMatrix4fv(uniLocation, 1, GL_FALSE, neo.data());
 
       /// Expect a name, size, and data in each table
    });

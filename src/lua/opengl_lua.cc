@@ -8,7 +8,8 @@
 #include "framebuffer.h"
 #include "glshader.h"
 #include "glmodel.h"
-#include "glm.hpp"
+#include "gml.hpp"
+#include "gml_dont_explode.h"
 
 void OpenGLWrapper::bind(sol::state& state) {
 
@@ -18,53 +19,12 @@ void OpenGLWrapper::bind(sol::state& state) {
    OpenGLWrapper::bindCoreEnums(gl);
    OpenGLWrapper::bindFboEnums(gl);
 
-   /// glsl_sandbox defined enums
-   gl.create_named("GLVec",
-         "Vec3", GLVec::Vec1,
-         "Vec2", GLVec::Vec2,
-         "Vec3", GLVec::Vec3,
-         "Vec4", GLVec::Vec4
-   );
-
-   gl.create_named("GLAttrib",
-         "Position", GLAttrib::Position,
-         "Color",    GLAttrib::Color,
-         "Normal",   GLAttrib::Normal
-   );
-
-   /// Register mat4s as existing in Lua
-
-   gl["mat4"]["projection"] =
-      [] (float fov, float aspect, float near, float far) {
-            return glm::perspective(fov, aspect, near, far);
-   };
-
-   gl["mat4"]["identity"] = []  { return glm::mat4(); };
-
-   gl["mat4"]["toVector"] = [] (glm::mat4 mat4) {
-                                    const float *p = (const float*)glm::value_ptr(mat4);
-                                    std::vector<float> output;
-                                    for (size_t i=0; i < 16  ;++i)  {
-                                       output.push_back(p[i]);
-                                    }
-                                    return output;
-                               };
-
-   /// glm
-   gl.new_usertype<glm::vec3>("vec3",
-         sol::constructors<glm::vec3(), glm::vec3(float, float, float)>(),
-         "x", &glm::vec3::x,
-         "y", &glm::vec3::y,
-         "z", &glm::vec3::z
-   );
-
    /// GPUBuffer
    gl.new_usertype<GPUBuffer>("GPUBuffer",
          sol::constructors<GPUBuffer(size_t, sol::table)>(),
          "insert",  static_cast<void (GPUBuffer::*)(unsigned char, sol::table)>(&GPUBuffer::insert)
    );
 
-   /// Framebuffers
    gl.new_usertype<Framebuffer>("Framebuffer",
          sol::constructors<Framebuffer()>(),
          "bind",       &Framebuffer::bind,
@@ -89,10 +49,8 @@ void OpenGLWrapper::bind(sol::state& state) {
          "getScale",                &GLModel::getScale,
          "setScale",                &GLModel::setScale,
          "getTransformationMatrix", &GLModel::getTransformationMatrix,
-         "getTransformationVector", &GLModel::getTransformationVector,
          "render",                  &GLModel::render
    );
-
 }
 
 void OpenGLWrapper::bindGL3Enums(sol::table& table) {

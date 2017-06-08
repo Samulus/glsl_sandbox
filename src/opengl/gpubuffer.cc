@@ -16,7 +16,7 @@
 #include "gltype.h"
 #include "../error.h"
 #include "util_lua.h"
-#include "glm.hpp"
+#include "gml.hpp"
 
 #include "SDL.h"
 

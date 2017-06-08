@@ -1,5 +1,5 @@
 /*
- * glmodel.cc
+ * gmlodel.cc
  * Author: Samuel Vargas
  * Date: 05/03/2017
  *
@@ -8,20 +8,19 @@
  * onscreen
  */
 
-#include "glmodel.h"
-
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <SDL.h>
 #include "util_lua.h"
 #include "tiny_obj_loader.h"
 #include "gpubuffer.h"
-#include "glm.h"
+#include "gml.hpp"
+#include "glmodel.h"
 
 GLModel::GLModel(GPUBuffer gpuBuffer) :
-   trans(glm::mat4()),
-   position(glm::vec3(0,0,0)),
-   rotation(glm::vec3(0,0,0)),
-      scale(glm::vec3(1,1,1)),
+   trans(gml::mat4(1)),
+   position(gml::vec3(0,0,0)),
+   rotation(gml::vec3(0,0,0)),
+      scale(gml::vec3(1,1,1)),
    gpuBuffer(gpuBuffer) {
 }
 
@@ -100,31 +99,22 @@ void GLModel::render() {
    this->gpuBuffer.render();
 }
 
-glm::vec3 GLModel::getPosition() const {
+gml::vec3 GLModel::getPosition() const {
    return this->position;
 }
 
-glm::vec3 GLModel::getRotation() const {
+gml::vec3 GLModel::getRotation() const {
    return this->rotation;
 }
 
-glm::vec3 GLModel::getScale() const {
+gml::vec3 GLModel::getScale() const {
    return this->scale;
 }
 
-void GLModel::setScale(glm::vec3 factor) {
-   this->trans = glm::scale(this->trans, factor);
+void GLModel::setScale(gml::vec3 factor) {
+   this->trans *= gml::scale(factor);
 }
 
-glm::mat4 GLModel::getTransformationMatrix() const {
+gml::mat4 GLModel::getTransformationMatrix() const {
    return this->trans;
-}
-
-std::vector<float> GLModel::getTransformationVector() const {
-   std::vector<float> output;
-   const float *p = (const float*)glm::value_ptr(this->trans);
-   for (size_t i=0; i < 16; ++i) {
-      output.push_back(p[i]);
-   }
-   return output;
 }

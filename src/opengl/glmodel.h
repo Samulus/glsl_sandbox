@@ -1,5 +1,5 @@
 /*
- * glmodel.h
+ * gmlodel.h
  * Author: Samuel Vargas
  * Date: 05/03/2017
  *
@@ -12,17 +12,16 @@
 #include <iostream>
 #include <vector>
 #include <glew.h>
-#include "vec3.hpp"
 #include "sol.h"
 #include "gpubuffer.h"
-#include "glm.hpp"
+#include "gml.hpp"
 
 class GLModel {
    private:
       std::vector<GLuint> indices;
       std::vector<GLuint> vertices;
-      glm::mat4 trans;
-      glm::vec3 position, rotation, scale;
+      gml::mat4 trans;
+      gml::vec3 position, rotation, scale;
       GPUBuffer gpuBuffer;
       GLModel(GPUBuffer gpuBuffer);
    public:
@@ -31,10 +30,9 @@ class GLModel {
       void bind();
       void unbind();
       void render();
-      glm::vec3 getPosition() const;
-      glm::vec3 getRotation() const;
-      glm::vec3 getScale() const;
-      void setScale(glm::vec3);
-      glm::mat4  getTransformationMatrix() const;
-      std::vector<float> getTransformationVector() const;
+      gml::vec3 getPosition() const;
+      gml::vec3 getRotation() const;
+      gml::vec3 getScale() const;
+      void setScale(gml::vec3);
+      gml::mat4  getTransformationMatrix() const;
 };
