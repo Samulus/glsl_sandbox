@@ -75,10 +75,6 @@ void ImGuiWrapper::bind(sol::state& lua, const Video& v) {
    imgui["beginGroup"]            = &ImGui::BeginGroup;
    imgui["endGroup"]              = &ImGui::EndGroup;
 
-   imgui["text"]                  = [] (std::string text) {
-                                       ImGui::Text("%s", text.c_str());
-                                    };
-
    /// Layout
    imgui["pushItemWidth"]         = [] (float width) {
                                        ImGui::PushItemWidth(width);
@@ -114,10 +110,22 @@ void ImGuiWrapper::bind(sol::state& lua, const Video& v) {
    imgui["popID"]                 =  &ImGui::PopID;
 
    /// Input
-   imgui["inputFloat"]            = [] (std::string text, float f)  {
-                                       auto result = ImGui::InputFloat(text.c_str(), &f, 0, 3, 4, 4);
-                                       return std::make_tuple(result, f);
-                                    };
+   imgui["inputFloat"]            = sol::overload(
+                                       [] (std::string text, float* f)  {
+                                          auto result = ImGui::InputFloat(text.c_str(), f, 0, 3, 4, 4);
+                                          return std::make_tuple(result, *f);
+                                       },
+                                       [] (std::string text, float f)  {
+                                          auto result = ImGui::InputFloat(text.c_str(), &f, 0, 3, 4, 4);
+                                          return std::make_tuple(result, f);
+                                       }
+                                    );
+
+   imgui["sliderFloat"]           = sol::overload(
+                                       [] (std::string txt, float* v, float min, float max, std::string fmt, float p) {
+                                          return ImGui::SliderFloat(txt.c_str(), v, min, max, fmt.c_str(), p);
+                                       }
+                                    );
 
    /// Settings
    imgui["setFontSize"]           = [] (size_t fontSize) {
