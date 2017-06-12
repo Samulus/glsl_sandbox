@@ -16,6 +16,7 @@
 #include "imgui_lua.h"
 #include "imgui_impl_sdl_gl3.h"
 #include "util.h"
+#include "glew.h"
 
 #include "sol.h"
 
@@ -27,6 +28,7 @@ int main() {
    );
 
    bool running = true;
+   glEnable(GL_DEPTH_TEST);
    while (running) {
       while (event.hasEvent()) {
          SDL_Event sdlEvent = event.getEvent();

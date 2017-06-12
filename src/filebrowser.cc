@@ -23,6 +23,6 @@ std::vector<std::string> FileBrowser::ls() const {
       tinydir_next(&dir);
    }
    tinydir_close(&dir);
-   
+
    return fileListing;
 }

@@ -11,6 +11,7 @@
 #include "util.h"
 #include <functional>
 #include <iostream>
+#include <cassert>
 
 static const Video* video = nullptr;
 
@@ -67,9 +68,14 @@ void ImGuiWrapper::bind(sol::state& lua, const Video& v) {
                                        ImGui::Text("%s", text.c_str());
                                     };
 
-   imgui["button"]                = [] (std::string text, size_t w, size_t h) {
-                                       return ImGui::Button(text.c_str(), ImVec2(w, h));
-                                    };
+   imgui["button"]                = sol::overload(
+                                       [] (std::string text, size_t w, size_t h) {
+                                          return ImGui::Button(text.c_str(), ImVec2(w, h));
+                                       },
+                                       [] (std::string text) {
+                                          return ImGui::SmallButton(text.c_str());
+                                       }
+                                    );
 
    /// Grouping
    imgui["beginGroup"]            = &ImGui::BeginGroup;
@@ -123,7 +129,9 @@ void ImGuiWrapper::bind(sol::state& lua, const Video& v) {
 
    imgui["sliderFloat"]           = sol::overload(
                                        [] (std::string txt, float* v, float min, float max, std::string fmt, float p) {
-                                          return ImGui::SliderFloat(txt.c_str(), v, min, max, fmt.c_str(), p);
+                                          assert(v != nullptr && "Nil was passed to this function");
+                                          auto result = ImGui::SliderFloat(txt.c_str(), v, min, max, fmt.c_str(), p);
+                                          return std::make_tuple(result, *v);
                                        }
                                     );
 
