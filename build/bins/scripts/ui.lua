@@ -32,53 +32,71 @@ end
 --       }
 -- Warnings:
 --    The 'title' parameter must be unique for every invocation of
---    this method.  We use it internally to cache the state
+--    this method.  We use it internally to cache the winState
 --    of the translate / scale / rotate sliders.
 -----------------------------------------------------
 do
-   local state = {}
+   local fnState = {}
    ui.matrixEdit = function(title, data)
       assert(type(title) == 'string', "arg[1] should be the window title")
       assert(type(data) == 'table', "Expected { {uniformName=, tabName=, matrix=,}, {...}})")
       assert(#data >= 1, "")
 
-      imgui.begin(title)
+      --
+      -- winState
+      --
 
-      -- generate the vectors for matrix manipulation
-      if not state[title] then
-         state[title] = {}
-         state[title].activeTab = 1
+      local winState, activeTab
+      if not fnState[title] then
+         fnState[title] = {}
+         winState = fnState[title]
+         winState.activeTab = 1
          for i=1, #data do
-            state[title][i] = {}
-            state[title][i].translate = gml.vec3.new(0,0,0)
-            state[title][i].scale     = gml.vec3.new(1,1,1)
-            state[title][i].rotate    = gml.vec3.new(0,0,0)
-            state[title][i].pi        = 0
+            local id = data[i].matrix:address()
+            if not fnState[id] then
+               fnState[id] = {}
+               fnState[id][i] = {}
+               fnState[id][i].translate = gml.vec3.new(0,0,0)
+               fnState[id][i].scale     = gml.vec3.new(1,1,1)
+               fnState[id][i].rotate    = gml.vec3.new(0,0,0)
+            end
          end
       end
 
-      -- allow user to click on tabs to switch them
+      -- setup local variables --
+      winState = fnState[title]
+      local activeTab = winState.activeTab
+      local matrix    = data[activeTab].matrix
+      local translate = fnState[matrix:address()][activeTab].translate
+      local rotate    = fnState[matrix:address()][activeTab].rotate
+      local scale     = fnState[matrix:address()][activeTab].scale
+      local original = nil
+      if not winState[matrix:address()] then
+         winState[matrix:address()] = {}
+         if not winState[matrix:address()].original then
+            winState[matrix:address()].original = gml.deepcopy(matrix)
+         end
+      end
+
+      local original = winState[matrix:address()].original
+
+      --
+      -- ui
+      --
+
+      imgui.begin(title)
+
+      -- draw tabs for user to select
       for i=1, #data do
          if imgui.button(data[i].tabName) then
-            state[title].activeTab = i
-            break;
+            winState.activeTab = i
          end
          imgui.sameLine(0, 10)
       end
 
-      local matrix = data[state[title].activeTab].matrix
+      imgui.newLine()
 
-      -- generate the 'original matrix',
-      -- We ca nuse the address
-      if not state[title][matrix:address()] then
-         state[title][matrix:address()] = {}
-         if not state[title][matrix:address()].original then
-            state[title][matrix:address()].original  = gml.deepcopy(matrix)
-         end
-      end
-
-      -- draw the selected panel
-      imgui.text("Matrix:")
+      -- draw the selected panel imgui.text("Matrix:")
       local id = 1
       for y=1, 4 do
          for x=1, 4 do
@@ -94,40 +112,31 @@ do
          end
       end
 
-      local translate = state[title][state[title].activeTab].translate
-      local rotate    = state[title][state[title].activeTab].rotate
-      local scale     = state[title][state[title].activeTab].scale
+      local drawElements = {
+         {'Translate', translate, -5.0, 5.0, "%f", 1},
+         {'Rotate',    rotate,    -5.0, 5.0, "%f", 1},
+         {'Scale',     scale,     -5.0, 5.0, "%f", 1}
+      }
 
-      -- draw scale / rotate / translate controls for the selected matrix
-      imgui.text("Translate:")
-      a = imgui.sliderFloat("X##trans" .. title, translate[1], -5.0, 5.0, "%f", 4)
-      b = imgui.sliderFloat("Y##trans" .. title, translate[2], -5.0, 5.0, "%f", 4)
-      c = imgui.sliderFloat("Z##trans" .. title, translate[3], -5.0, 5.0, "%f", 4)
+      imgui.text("Matrix Address: " .. matrix:address())
 
-      imgui.text("Rotate:")
-      d = imgui.sliderFloat("X##rotate" .. title, rotate[1], -5.0, 5.0, "%f", 4)
-      e = imgui.sliderFloat("Y##rotate" .. title, rotate[2], -5.0, 5.0, "%f", 4)
-      f = imgui.sliderFloat("Z##rotate" .. title, rotate[3], -5.0, 5.0, "%f", 4)
+      local dimen = {"X", "Y", "Z"}
+      local updateMatrix = false;
 
-      imgui.text("Scale:")
-      g = imgui.sliderFloat("X##scale" .. title, scale[1], -5.0, 5.0, "%f", 4)
-      h = imgui.sliderFloat("Y##scale" .. title, scale[2], -5.0, 5.0, "%f", 4)
-      i = imgui.sliderFloat("Z##scale" .. title, scale[3], -5.0, 5.0, "%f", 4)
-
-      -- add an auto rotate button --
-      --if imgui.button("Auto Rotate") then
-      if data[state[title].activeTab].tabName == 'View' then
-         local pi = state[title][state[title].activeTab]
-         local x, y = math.cos(os.clock()), math.sin(os.clock())
-         rotate[1] = x
-         rotate[3] = y
+      for i=1, #drawElements do
+         imgui.text(drawElements[i][1])
+         for d=1, #dimen do
+            if imgui.sliderFloat(dimen[d] .. "##" .. drawElements[i][1], drawElements[i][2][d], -5.0, 5.0, "%f", 1)
+               and not updateMatrix then
+               updateMatrix = true
+            end
+         end
       end
 
       --- generate a new transformation matrix for the active matrix
-      local original = state[title][matrix:address()].original
-      --if a or b or c or d or e or f or g or h or i then
+      if updateMatrix then
          matrix.assign = original * (gml.rotate(rotate) * gml.translate(translate) * gml.scale(scale))
-      --end
+      end
 
       imgui._end()
    end
