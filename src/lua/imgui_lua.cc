@@ -82,14 +82,19 @@ void ImGuiWrapper::bind(sol::state& lua, const Video& v) {
    imgui["endGroup"]              = &ImGui::EndGroup;
 
    /// Layout
-   imgui["pushItemWidth"]         = [] (float width) {
-                                       ImGui::PushItemWidth(width);
+   imgui["newLine"]               = [] {
+                                       ImGui::NewLine();
                                     };
-   imgui["popItemWidth"]          = &ImGui::PopItemWidth;
-
    imgui["columns"]               = [] (size_t n, std::string title, bool border = false) {
                                        ImGui::Columns(n, title.c_str(), border);
                                     };
+
+   imgui["pushItemWidth"]         = [] (float width) {
+                                       ImGui::PushItemWidth(width);
+                                    };
+
+   imgui["popItemWidth"]          = &ImGui::PopItemWidth;
+
 
    imgui["separator"]             = &ImGui::Separator;
    imgui["sameLine"]              = sol::overload(
