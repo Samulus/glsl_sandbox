@@ -1,6 +1,8 @@
 # glsl_sandbox
 small C++ utility to experiment with opengl
 
+![glsl_sandbox](./media/screenshot.png?raw=true)
+
 # External Dependencies
 * GLEW
 * GL

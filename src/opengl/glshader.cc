@@ -34,8 +34,16 @@ GLShader::GLShader(sol::table table) {
    buffer.str(std::string());
    tmp.close();
 
+   if (vertexSrc.length() == 0) {
+      throw std::runtime_error(strFormat("Couldn't open file: %s\n",vertexPath.c_str()));
+   }
+
    /// load fragment shader source code
    std::string fragmentPath = table["fragment"].get<std::string>();
+   if (fragmentPath.length() == 0) {
+      throw std::runtime_error(strFormat("Couldn't open file: %s\n",vertexPath.c_str()));
+   }
+
    tmp.open(fragmentPath);
    buffer << tmp.rdbuf();
    fragmentSrc = buffer.str();

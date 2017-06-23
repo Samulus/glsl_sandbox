@@ -1,4 +1,4 @@
-local inspect = require "scripts/inspect"
+local inspect = require "scripts/lib/inspect"
 local ui = {}
 
 -----------------------------------------------------
@@ -19,7 +19,7 @@ ui.globalMenu = function()
    return item;
 end
 
------------------------------------------------------
+-----------------------------------------------------------------------------
 -- Matrix 4x4 Manipulator View
 -- Args:
 --    @title Window Title
@@ -34,7 +34,7 @@ end
 --    The 'title' parameter must be unique for every invocation of
 --    this method.  We use it internally to cache the winState
 --    of the translate / scale / rotate sliders.
------------------------------------------------------
+-----------------------------------------------------------------------------
 do
    local fnState = {}
    ui.matrixEdit = function(title, data)
@@ -70,7 +70,6 @@ do
       local translate = fnState[matrix:address()][activeTab].translate
       local rotate    = fnState[matrix:address()][activeTab].rotate
       local scale     = fnState[matrix:address()][activeTab].scale
-      local original = nil
       if not winState[matrix:address()] then
          winState[matrix:address()] = {}
          if not winState[matrix:address()].original then
@@ -94,6 +93,7 @@ do
          imgui.sameLine(0, 10)
       end
 
+      imgui.text("(" .. data[activeTab].tabName .. ")")
       imgui.newLine()
 
       -- draw the selected panel imgui.text("Matrix:")
@@ -113,12 +113,12 @@ do
       end
 
       local drawElements = {
-         {'Translate', translate, -5.0, 5.0, "%f", 1},
-         {'Rotate',    rotate,    -5.0, 5.0, "%f", 1},
-         {'Scale',     scale,     -5.0, 5.0, "%f", 1}
+         {'Translate (xyz)', translate,},
+         {'Rotate (xyz)',    rotate,   },
+         {'Scale (xyz)',     scale,    }
       }
 
-      imgui.text("Matrix Address: " .. matrix:address())
+      imgui.text("Address: " .. matrix:address())
 
       local dimen = {"X", "Y", "Z"}
       local updateMatrix = false;
@@ -126,16 +126,26 @@ do
       for i=1, #drawElements do
          imgui.text(drawElements[i][1])
          for d=1, #dimen do
-            if imgui.sliderFloat(dimen[d] .. "##" .. drawElements[i][1], drawElements[i][2][d], -5.0, 5.0, "%f", 1)
+            imgui.pushID(d)
+            if imgui.sliderFloat("##" .. drawElements[i][1] .. title, drawElements[i][2][d], -10.0, 10.0, "%f", 1)
                and not updateMatrix then
                updateMatrix = true
+            end
+            imgui.popID(d)
+            imgui.sameLine(0,10)
+            if imgui.inputFloat("##" .. drawElements[i][1]  .. title .. d, drawElements[i][2][d]) then
+               updateMatrix = true
+            end
+            imgui.sameLine(0,100)
+            if imgui.button("Auto") then
+               print("honey")
             end
          end
       end
 
       --- generate a new transformation matrix for the active matrix
       if updateMatrix then
-         matrix.assign = original * (gml.rotate(rotate) * gml.translate(translate) * gml.scale(scale))
+         matrix.assign = original * (gml.translate(translate) * gml.rotate(rotate) * gml.scale(scale))
       end
 
       imgui._end()

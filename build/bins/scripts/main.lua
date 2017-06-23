@@ -1,43 +1,21 @@
-local inspect = require "scripts/inspect"
-local      ui = require "scripts/ui"
-local   human = require "scripts/human"
-local suzanne = require "scripts/suzanne"
+local basic = require "scripts/demos/basic"
+local prism = require "scripts/demos/basic"
+local currentDemo = "Basic"
 
-imgui.setFontSize(24)
-sdl2.setWindowSize(1000, 1000, 1280, 720)
-
-local proj = gml.perspective(120, 16/9, 0.1, 50)
-local view = gml.lookAt(
-                 gml.vec3.new(0, 0, 5),
-                 gml.vec3.new(0,0,0),
-                 gml.vec3.new(0,1,0)
-              )
-
-human.view   = view
-suzanne.view = view
-human.proj   = proj
-suzanne.proj = proj
+imgui.setFontSize(16)
+sdl2.setWindowSize(32, 32, 1920, 1080)
 
 function render()
    video.setViewport()
    video.clear(0.5,0.5,0.5)
 
-   human.render()
-   suzanne.render()
-
    imgui.newFrame()
+   imgui.begin("Demos:")
+      if imgui.button("Basic") then currentDemo = "Basic" end
+      if imgui.button("Prism") then currentDemo = "Prism" end
+   imgui._end()
 
-   ui.matrixEdit ("Human", {
-      { uniformName = 'proj',  tabName = 'Projection', matrix = human.proj},
-      { uniformName = 'view',  tabName = 'View',       matrix = human.view},
-      { uniformName = 'model', tabName = 'Model',      matrix = human.model}
-   })
-
-   ui.matrixEdit ("Suzanne", {
-      { uniformName = 'proj',  tabName = 'Projection', matrix = suzanne.proj},
-      { uniformName = 'view',  tabName = 'View',       matrix = suzanne.view},
-      { uniformName = 'model', tabName = 'Model',      matrix = suzanne.model}
-   })
+   if currentDemo == "Basic" then basic.render() end
 
    imgui.render()
    video.present()
