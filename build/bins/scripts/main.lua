@@ -2,8 +2,8 @@ local basic = require "scripts/demos/basic"
 local prism = require "scripts/demos/basic"
 local currentDemo = "Basic"
 
-imgui.setFontSize(16)
-sdl2.setWindowSize(32, 32, 1920, 1080)
+imgui.setFontSize(24)
+sdl2.setWindowSize(32, 32, 3000, 2400)
 
 function render()
    video.setViewport()

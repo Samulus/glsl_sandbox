@@ -140,7 +140,7 @@ GPUBuffer::GPUBuffer(size_t numPoints, sol::table attribLen) :
 }
 
 void GPUBuffer::insert(unsigned char position, sol::table newVertexData) {
-     this->insert(position, tableToVector<GLfloat>(newVertexData));
+   this->insert(position, tableToVector<GLfloat>(newVertexData));
 }
 
 void GPUBuffer::setEBO(sol::table indices) {
