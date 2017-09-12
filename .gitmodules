@@ -1,6 +1,6 @@
-[submodule "src/lib/gml"]
-	path = src/lib/gml
-	url = git@github.com:https://github.com/ilmola/gml.git
 [submodule "src/lib/imgui"]
 	path = src/lib/imgui
 	url = https://github.com/ocornut/imgui
+[submodule "src/lib/gml"]
+	path = src/lib/gml
+	url = https://github.com/ilmola/gml
