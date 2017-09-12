@@ -12,6 +12,6 @@
 std::string thisExePath() {
    char* p = SDL_GetBasePath();
    std::string output = std::string(p);
-   free(p);
+   //free(p);
    return output;
 }

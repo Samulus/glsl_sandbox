@@ -11,6 +11,4 @@ build/bins/glsl_sandbox
 .autotags.pid
 .tags
 .vs/
-x64
-x86
 Debug/

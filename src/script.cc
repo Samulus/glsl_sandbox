@@ -10,6 +10,7 @@
 #include "sdl2_lua.h"
 #include "video_lua.h"
 #include "gml_lua.h"
+#include "system_lua.h"
 
 Script::Script(const std::string& path, const Video& video) {
    this->lua.open_libraries(
@@ -27,6 +28,7 @@ Script::Script(const std::string& path, const Video& video) {
    SDL2Wrapper::bind(this->lua, video);
    VideoWrapper::bind(this->lua, video);
    GMLWrapper::bind(this->lua);
+   SystemWrapper::bind(this->lua);
 
    this->lua.script_file(path);
 }

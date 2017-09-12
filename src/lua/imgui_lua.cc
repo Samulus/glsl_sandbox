@@ -143,8 +143,10 @@ void ImGuiWrapper::bind(sol::state& lua, const Video& v) {
    /// Settings
    imgui["setFontSize"]           = [] (size_t fontSize) {
                                        ImGuiIO& io = ImGui::GetIO();
+									   /*
                                        io.Fonts->AddFontFromFileTTF((thisExePath() + "assets/roboto.ttf").c_str(),
                                              fontSize);
+									   */
                                     };
 
    imgui["enableSoftwareMouse"]   = [] {

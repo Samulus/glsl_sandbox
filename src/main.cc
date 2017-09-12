@@ -17,14 +17,13 @@
 #include "imgui_impl_sdl_gl3.h"
 #include "util.h"
 #include "glew.h"
-
 #include "sol.h"
 
-int main() {
+int main(int ac, char** av) {
    auto video  = Video::getInstance();
    auto event  = Event();
    auto script = Script(
-         thisExePath() + "scripts/main.lua", video
+         thisExePath() + "Scripts\\main.lua", video
    );
 
    bool running = true;
@@ -44,6 +43,7 @@ int main() {
                break;
          }
       }
+	
       script.fn("render");
    }
 

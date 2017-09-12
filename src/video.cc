@@ -27,17 +27,19 @@ Video::Video() {
 
    SDL_bool yes = SDL_bool(true);
    SDL_CaptureMouse(yes);
-
+   glewExperimental = GL_TRUE;
    // setup window
    window = SDL_CreateWindow("glsl_sandbox",
        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-       1280, 720,
+       1920, 1080,
        SDL_WINDOW_RESIZABLE |
        SDL_WINDOW_SHOWN |
        SDL_WINDOW_ALLOW_HIGHDPI  |
        SDL_RENDERER_ACCELERATED  |
        SDL_RENDERER_PRESENTVSYNC |
        SDL_WINDOW_OPENGL);
+
+   SDL_assert(window != false);
 
    if (!window) {
       throw std::runtime_error(std::string(SDL_GetError()));
@@ -46,17 +48,19 @@ Video::Video() {
    // setup sdl2 + opengl
    SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG);
    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3); SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3); 
+   SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
    SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
    glContext = SDL_GL_CreateContext(window);
-   SDL_GL_MakeCurrent(window, &glContext);
+   
 
 
    // setup GLEW
    glewExperimental = 1;
-   if (glewInit() != GLEW_OK) {
-      fprintf(stderr, "Failed to setup GLEW\n");
+   const auto glewOK = glewInit();
+   if (glewOK != GLEW_OK) {
+      fprintf(stderr, "Failed to setup GLEW: %s\n", glewGetErrorString(glewOK));
       throw SDL_Exception("Failed to setup GLEW");
    }
 
@@ -64,7 +68,12 @@ Video::Video() {
       SDL_Log("Cannot create SDL2 Window: %s\n", SDL_GetError());
       throw SDL_Exception("Cannot init SDL2: " + std::string(SDL_GetError()));
    }
-
+   /*
+   const auto okMakeCurrent = SDL_GL_MakeCurrent(window, &glContext);
+   if (okMakeCurrent < 0) {
+	   SDL_Log("Cannot create make SDL2 Window the OpenGL context: %s\n", SDL_GetError());  
+   }
+   */
    // setup viewport
    this->setViewport();
 }
